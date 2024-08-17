@@ -1,8 +1,14 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Inicio
-    </ion-title>
+    <!-- TITULO DE LAS APPS -->
+    <ion-title class="titulo-inicio">Inicio</ion-title>
+    <!-- ICONO DE PERFIL -->
+    <ion-buttons slot="end">
+      <ion-button [routerLink]="['/tabs/tab3']">
+        <ion-icon slot="icon-only" name="person-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <!-- FIN ICONO DE PERFIL -->
   </ion-toolbar>
 </ion-header>
 
@@ -12,6 +18,17 @@
       <ion-title size="large">Tab 1</ion-title>
     </ion-toolbar>
   </ion-header>
+  <!-- texto -->
+  <h1>hola</h1>
+  <br>
+  <h1>hola</h1>
 
-  <app-explore-container name="Tab 1 page"></app-explore-container>
+  <app-explore-container name="PÁGINA DE NAVEGACION"></app-explore-container>
 </ion-content>
+
+<!-- FOOTER --> 
+<ion-footer>
+  <ion-toolbar>
+    <ion-title> Footer </ion-title>
+  </ion-toolbar>
+</ion-footer>

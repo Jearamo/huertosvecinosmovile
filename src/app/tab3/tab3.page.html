@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Config
+      Ajústes
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -12,6 +12,41 @@
       <ion-title size="large">Tab 3</ion-title>
     </ion-toolbar>
   </ion-header>
-
-  <app-explore-container name="Tab 3 page"></app-explore-container>
+  <!-- TARJETA DE CUENTA -->
+  <p class="titulo-descripcion">General</p>
+  <ion-card [routerLink]="['/tabs/tab1']">
+    <ion-card-header>
+      <ion-card-title>
+        <ion-icon name="person-outline" class="first-icon-config"></ion-icon>
+        Ajustes de cuenta
+        <ion-icon name="arrow-forward-outline" class="final-arrow-config"></ion-icon>
+      </ion-card-title>
+    </ion-card-header>    
+  </ion-card>
+  <!-- TARJETA DE ACERCA -->
+  <p class="titulo-descripcion">Acerca de</p>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title class="antisocial" [routerLink]="['/tabs/tab1']"><ion-icon name="file-tray-full-outline" class="first-icon-config"></ion-icon>Política de contenido<ion-icon name="arrow-forward-outline" class="final-arrow-config"></ion-icon></ion-card-title>
+      <ion-card-title class="antisocial" [routerLink]="['/tabs/tab1']"><ion-icon name="settings-outline" class="first-icon-config"></ion-icon>Política de privacidad<ion-icon name="arrow-forward-outline" class="final-arrow-config"></ion-icon></ion-card-title>
+      <ion-card-title class="antisocial" [routerLink]="['/tabs/tab1']"><ion-icon name="person-outline" class="first-icon-config"></ion-icon>Acuerdo de usuario<ion-icon name="arrow-forward-outline" class="final-arrow-config"></ion-icon></ion-card-title>
+      <ion-card-title class="antisocial" [routerLink]="['/tabs/tab1']"><ion-icon name="file-tray-full-outline" class="first-icon-config"></ion-icon>Agradecimientos<ion-icon name="arrow-forward-outline" class="final-arrow-config"></ion-icon></ion-card-title>
+    </ion-card-header>
+  </ion-card>
+   <!-- TARJETA DE SOPORTE -->
+  <p class="titulo-descripcion">Soporte</p>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title class="antisocial" [routerLink]="['/tabs/tab1']"><ion-icon name="help-outline" class="first-icon-config"></ion-icon>Centro de ayuda<ion-icon name="arrow-forward-outline" class="final-arrow-config"></ion-icon></ion-card-title>
+      <ion-card-title class="antisocial" [routerLink]="['/tabs/tab1']"><ion-icon name="leaf-outline" class="first-icon-config"></ion-icon>Visita F/Huertos vecinos<ion-icon name="arrow-forward-outline" class="final-arrow-config"></ion-icon></ion-card-title>
+      <ion-card-title class="antisocial" [routerLink]="['/tabs/tab1']"><ion-icon name="mail-outline" class="first-icon-config"></ion-icon>Reportar un problema<ion-icon name="arrow-forward-outline" class="final-arrow-config"></ion-icon></ion-card-title>
+    </ion-card-header>
+  </ion-card>
+  <!-- TARJETA DE VERSIÓN -->
+   <p class="titulo-descripcion">Versión</p>
+   <ion-card>
+    <ion-card-header>
+      <ion-card-title><ion-icon name="person-outline" class="first-icon-config"></ion-icon>Alpha 17.08.2024</ion-card-title>
+    </ion-card-header>
+  </ion-card>
 </ion-content>
