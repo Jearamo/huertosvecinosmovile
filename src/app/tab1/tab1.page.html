@@ -1,10 +1,10 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <!-- TITULO DE LAS APPS -->
-    <ion-title class="titulo-inicio">Inicio</ion-title>
+    <ion-title class="titulo-inicio">Huertos vecinos</ion-title>
     <!-- ICONO DE PERFIL -->
-    <ion-buttons slot="end">
-      <ion-button [routerLink]="['/tabs/tab3']">
+    <ion-buttons slot="end"> {{ userName }}
+      <ion-button [routerLink]="['/paginaperfil']">
         <ion-icon slot="icon-only" name="person-circle-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
