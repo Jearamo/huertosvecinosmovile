@@ -5,17 +5,17 @@
     <form>
       <!-- CORREO -->
       <ion-item>
-        <ion-input label="Correo" labelPlacement="floating" placeholder="Ingrese su correo" type="email" required></ion-input>
+        <ion-input label="Correo" labelPlacement="floating" placeholder="Ingrese su correo" type="email" required [(ngModel)]="correo" name="correo"></ion-input>
       </ion-item>
       <!-- CONTRASEÑA -->
       <ion-item>
-        <ion-input label="Contraseña" labelPlacement="floating" placeholder="Ingrese su contraseña" [type]="showPassword ? 'text' : 'password'" required></ion-input>
+        <ion-input label="Contraseña" labelPlacement="floating" placeholder="Ingrese su contraseña" [type]="showPassword ? 'text' : 'password'" required [(ngModel)]="contrasena" name="contrasena"></ion-input>
         <ion-button fill="clear" slot="end" class="password-toggle" (click)="togglePasswordVisibility()">
           <ion-icon [name]="showPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
         </ion-button>
       </ion-item>
       <!-- BOTÓN -->
-      <ion-button expand="block" class="ion-margin-top">Iniciar</ion-button>
+      <ion-button expand="block" class="ion-margin-top" (click)="login()">Iniciar</ion-button>
     </form>
     <!-- EXTRA -->
     <p class="forgot-password">Olvidaste tu contraseña?</p>
