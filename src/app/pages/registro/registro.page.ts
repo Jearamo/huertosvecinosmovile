@@ -30,6 +30,7 @@ export class RegistroPage implements OnInit {
   }
   // REGISTRO DE USUARIO
   async registrar() {
+    // Verificar que las contraseñas coincidan
     if (this.nuevoUsuario.contrasena !== this.confirmarContrasena) {
       const alert = await this.alertController.create({
         header: 'Error',
@@ -39,7 +40,18 @@ export class RegistroPage implements OnInit {
       await alert.present();
       return;
     }
-
+  
+    // Verificar la edad
+    if (!this.tieneEdadSuficiente(this.nuevoUsuario.fechaNacimiento)) {
+      const alert = await this.alertController.create({
+        header: 'Error',
+        message: 'Debes tener al menos 16 años para registrarte',
+        buttons: ['OK']
+      });
+      await alert.present();
+      return;
+    }
+  
     // Obtener usuarios existentes o inicializar un array vacío
     let usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
     
@@ -48,7 +60,7 @@ export class RegistroPage implements OnInit {
     
     // Guardar la lista actualizada de usuarios
     localStorage.setItem('usuarios', JSON.stringify(usuarios));
-
+  
     const alert = await this.alertController.create({
       header: 'Éxito',
       message: 'Usuario registrado correctamente',
@@ -60,6 +72,19 @@ export class RegistroPage implements OnInit {
       }]
     });
     await alert.present();
+  }
+  
+  tieneEdadSuficiente(fechaNacimiento: string): boolean {
+    const hoy = new Date();
+    const fechaNac = new Date(fechaNacimiento);
+    let edad = hoy.getFullYear() - fechaNac.getFullYear();
+    const m = hoy.getMonth() - fechaNac.getMonth();
+    
+    if (m < 0 || (m === 0 && hoy.getDate() < fechaNac.getDate())) {
+      edad--;
+    }
+    
+    return edad >= 16;
   }
 
   ngOnInit() {
