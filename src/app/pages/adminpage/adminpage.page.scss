@@ -1,0 +1,42 @@
+ion-segment {
+    margin-bottom: 20px;
+  }
+  
+  ion-list {
+    background: transparent;
+  }
+  
+  ion-item {
+    --background: #ffffff;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    --border-radius: 8px;
+  }
+  
+  ion-item-sliding {
+    margin-bottom: 10px;
+  }
+  
+  ion-item-option {
+    border-radius: 0 8px 8px 0;
+  }
+  
+  form {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  ion-button[type="submit"] {
+    margin-top: 20px;
+  }
+  
+  h2 {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  p {
+    color: #666;
+    font-size: 0.8em;
+  }
