@@ -14,8 +14,9 @@ export class LoginPage implements OnInit {
   correo: string = '';
   contrasena: string = '';
 
-  validEmail: string = 'Jehison';
-  validPassword: string = 'admin123';
+  // Usuario predefinido
+  validEmail: string = 'Jehison1';
+  validPassword: string = 'admin1234';
 
   constructor(private router: Router, private alertController: AlertController) { }
   // MOSTRAR CONTRASEÑA
@@ -26,14 +27,32 @@ export class LoginPage implements OnInit {
   }
   // IF PARA INICIO DE SESIÓN
   async login() {
+    // Verificar el usuario predefinido
     if (this.correo === this.validEmail && this.contrasena === this.validPassword) {
-      // VÁLIDO
-      this.router.navigate(['/tabs/tab1']); // DIRIGE A LA PRINCIPAL
+      localStorage.setItem('usuarioActual', JSON.stringify({
+        nombreUsuario: 'Usuario Predefinido',
+        correo: this.validEmail,
+        nombre: 'Usuario',
+        apellido: 'Predefinido',
+        fechaNacimiento: '1990-01-01' // Fecha de ejemplo
+      }));
+      this.router.navigate(['/tabs/tab1']);
+      return;
+    }
+  
+    // Verificar usuarios registrados
+    const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
+    const usuarioEncontrado = usuarios.find(
+      (u: any) => u.correo === this.correo && u.contrasena === this.contrasena
+    );
+  
+    if (usuarioEncontrado) {
+      localStorage.setItem('usuarioActual', JSON.stringify(usuarioEncontrado));
+      this.router.navigate(['/tabs/tab1']);
     } else {
-      // INVÁLIDO
       const alert = await this.alertController.create({
-        header: 'Inicio de sesión fallido',
-        message: 'Correo o contraseña inválidos. Por favor, intente de nuevo.',
+        header: 'Error',
+        message: 'Correo o contraseña incorrectos',
         buttons: ['OK']
       });
       await alert.present();

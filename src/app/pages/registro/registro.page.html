@@ -11,32 +11,32 @@
   <div class="register-container">
     <img src="assets/icon/logo.png" alt="App Logo" class="logo">
     <h2>Crear cuenta</h2>
-    <form>
+    <form (ngSubmit)="registrar()">
       <ion-item>
-        <ion-input label="Nombre de Usuario" labelPlacement="floating" placeholder="Ingrese su nombre de usuario" type="text" required></ion-input>
+        <ion-input label="Nombre de Usuario" labelPlacement="floating" placeholder="Ingrese su nombre de usuario" type="text" required [(ngModel)]="nuevoUsuario.nombreUsuario" name="nombreUsuario"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-input label="Nombre" labelPlacement="floating" placeholder="Ingrese su nombre" type="text" required></ion-input>
+        <ion-input label="Nombre" labelPlacement="floating" placeholder="Ingrese su nombre" type="text" required [(ngModel)]="nuevoUsuario.nombre" name="nombre"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-input label="Apellido" labelPlacement="floating" placeholder="Ingrese su Apellido" type="text" required></ion-input>
+        <ion-input label="Apellido" labelPlacement="floating" placeholder="Ingrese su Apellido" type="text" required [(ngModel)]="nuevoUsuario.apellido" name="apellido"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-input label="Fecha de nacimiento" labelPlacement="floating" placeholder="Ingrese su fecha de nacimiento" type="date" required></ion-input>
+        <ion-input label="Fecha de nacimiento" labelPlacement="floating" placeholder="Ingrese su fecha de nacimiento" type="date" required [(ngModel)]="nuevoUsuario.fechaNacimiento" name="fechaNacimiento"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-input label="Correo" labelPlacement="floating" placeholder="Ingrese su correo" type="email" required></ion-input>
+        <ion-input label="Correo" labelPlacement="floating" placeholder="Ingrese su correo" type="email" required [(ngModel)]="nuevoUsuario.correo" name="correo"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-input label="Contraseña" labelPlacement="floating" placeholder="Ingrese su contraseña" [type]="showPassword ? 'text' : 'password'" required></ion-input>
+        <ion-input label="Contraseña" labelPlacement="floating" placeholder="Ingrese su contraseña" [type]="showPassword ? 'text' : 'password'" required [(ngModel)]="nuevoUsuario.contrasena" name="contrasena"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-input label="Confirme su contraseña" labelPlacement="floating" placeholder="Ingrese nuevamente" [type]="showPassword ? 'text' : 'password'" required></ion-input>
+        <ion-input label="Confirme su contraseña" labelPlacement="floating" placeholder="Ingrese nuevamente" [type]="showPassword ? 'text' : 'password'" required [(ngModel)]="confirmarContrasena" name="confirmarContrasena"></ion-input>
         <ion-button fill="clear" slot="end" class="password-toggle" (click)="togglePasswordVisibility()">
           <ion-icon [name]="showPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
         </ion-button>
       </ion-item>
-      <ion-button expand="block" class="ion-margin-top">Registrar</ion-button>
+      <ion-button expand="block" class="ion-margin-top" type="submit">Registrar</ion-button>
     </form>
     <p class="login">Ya tienes cuenta? <a href="login">Inicia sesión</a></p>
   </div>
