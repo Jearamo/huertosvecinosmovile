@@ -11,7 +11,7 @@ export class PaginaperfilPage implements OnInit {
   userName: string = userName;
   userEmail: string = "juanito@duocuc.cl"
   edad: number = 20;
-  nombre: string = "Juan";
+  nombre: string = "Eskibidi";
   apellido: string = "Vergara";
   constructor() { }
 

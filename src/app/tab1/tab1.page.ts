@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-export const userName = 'Juanito';
+export const userName = 'Eskibidi';
 
 @Component({
   selector: 'app-tab1',

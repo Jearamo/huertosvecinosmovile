@@ -36,6 +36,14 @@ const routes: Routes = [
   {
     path: 'reportproblema',
     loadChildren: () => import('./pages/reportproblema/reportproblema.module').then( m => m.ReportproblemaPageModule)
+  },
+  {
+    path: 'registro',
+    loadChildren: () => import('./pages/registro/registro.module').then( m => m.RegistroPageModule)
+  },
+  {
+    path: 'login',
+    loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
   }
 
 ];
