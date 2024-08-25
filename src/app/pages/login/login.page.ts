@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,7 @@ export class LoginPage implements OnInit {
   validEmail: string = 'Jehison1';
   validPassword: string = 'admin1234';
 
-  constructor(private router: Router, private alertController: AlertController) { }
+  constructor(private router: Router, private alertController: AlertController, private navCtrl: NavController ) { }
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
@@ -36,7 +37,9 @@ export class LoginPage implements OnInit {
         contrasena: this.validPassword,
         validAdmin: true
       }));
-      this.router.navigate(['/tabs/tab1']);
+      this.navCtrl.navigateRoot('/tabs/tab1', { animated: false }).then(() => {
+        window.location.reload();
+      });
       return;
     }
 
