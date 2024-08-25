@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 
@@ -7,7 +7,7 @@ import { AlertController } from '@ionic/angular';
   templateUrl: './registro.page.html',
   styleUrls: ['./registro.page.scss'],
 })
-export class RegistroPage implements OnInit {
+export class RegistroPage {
   nuevoUsuario = {
     nombreUsuario: '',
     nombre: '',
@@ -23,46 +23,46 @@ export class RegistroPage implements OnInit {
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
-    const passwordInput = document.querySelector('ion-input[type="password"]') as HTMLIonInputElement;
-    passwordInput.type = this.showPassword ? 'text' : 'password';
   }
 
   async registrar() {
+    // Validar si las contraseñas coinciden
     if (this.nuevoUsuario.contrasena !== this.confirmarContrasena) {
-      const alert = await this.alertController.create({
-        header: 'Error',
-        message: 'Las contraseñas no coinciden',
-        buttons: ['OK']
-      });
-      await alert.present();
+      await this.mostrarAlerta('Error', 'Las contraseñas no coinciden.');
       return;
     }
 
+    // Validar formato del correo electrónico
+    if (!this.validarCorreo(this.nuevoUsuario.correo)) {
+      await this.mostrarAlerta('Error', 'Por favor, ingrese un correo electrónico válido.');
+      return;
+    }
+
+    // Validar longitud de la contraseña
+    if (this.nuevoUsuario.contrasena.length < 8) {
+      await this.mostrarAlerta('Error', 'La contraseña debe tener al menos 8 caracteres.');
+      return;
+    }
+
+    // Validar edad mínima
     if (!this.tieneEdadSuficiente(this.nuevoUsuario.fechaNacimiento)) {
-      const alert = await this.alertController.create({
-        header: 'Error',
-        message: 'Debes tener al menos 16 años para registrarte',
-        buttons: ['OK']
-      });
-      await alert.present();
+      await this.mostrarAlerta('Error', 'Debes tener al menos 16 años para registrarte.');
       return;
     }
 
+    // Registrar el nuevo usuario
     let usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
     usuarios.push(this.nuevoUsuario);
     localStorage.setItem('usuarios', JSON.stringify(usuarios));
 
-    const alert = await this.alertController.create({
-      header: 'Éxito',
-      message: 'Usuario registrado correctamente',
-      buttons: [{
-        text: 'OK',
-        handler: () => {
-          this.router.navigate(['/login']);
-        }
-      }]
-    });
-    await alert.present();
+    await this.mostrarAlerta('Éxito', 'Usuario registrado correctamente.');
+
+    this.router.navigate(['/login']);
+  }
+
+  validarCorreo(correo: string): boolean {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(correo);
   }
 
   tieneEdadSuficiente(fechaNacimiento: string): boolean {
@@ -78,6 +78,12 @@ export class RegistroPage implements OnInit {
     return edad >= 16;
   }
 
-  ngOnInit() {
+  async mostrarAlerta(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header: header,
+      message: message,
+      buttons: ['OK']
+    });
+    await alert.present();
   }
 }

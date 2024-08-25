@@ -14,7 +14,7 @@ export class LoginPage implements OnInit {
   contrasena: string = '';
 
   // Usuario admin
-  validEmail: string = 'Jehison1';
+  validEmail: string = 'admin@gmail.com';
   validPassword: string = 'admin1234';
 
   constructor(private router: Router, private alertController: AlertController, private navCtrl: NavController ) { }
