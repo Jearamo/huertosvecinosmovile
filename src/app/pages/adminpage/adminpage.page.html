@@ -41,16 +41,13 @@
   <div *ngIf="currentView === 'add'">
     <form (ngSubmit)="addPost()">
       <ion-item>
-        <ion-label position="floating">Título</ion-label>
-        <ion-input type="text" [(ngModel)]="newPost.title" name="title" required></ion-input>
+        <ion-input label="Título" labelPlacement="floating" placeholder="Ingrese un título" type="text" required name="title" [(ngModel)]="newPost.title"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label position="floating">Contenido</ion-label>
-        <ion-textarea [(ngModel)]="newPost.content" name="content" required></ion-textarea>
+        <ion-input label="Contenido" labelPlacement="floating" placeholder="Ingrese contenido" type="text" required name="content" [(ngModel)]="newPost.content"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label position="floating">Autor</ion-label>
-        <ion-input type="text" [(ngModel)]="newPost.author" name="author" required></ion-input>
+        <ion-input label="Autor" labelPlacement="floating" placeholder="Ingrese contenido" type="text" required name="author" [(ngModel)]="newPost.author"></ion-input>
       </ion-item>
       <ion-button expand="block" type="submit" class="ion-margin-top">Agregar Publicación</ion-button>
     </form>

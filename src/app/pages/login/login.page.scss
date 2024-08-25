@@ -21,21 +21,22 @@ ion-content {
     margin-bottom: 20px;
   }
   
+
   ion-item {
-    --background: #ffffff;
-    --border-color: #dedede;
-    --border-radius: 4px;
-    --padding-start: 0;
-    margin-bottom: 16px;
+    --background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+  }
+
+  ion-input {
+    --placeholder-color: #999;
   }
   
   ion-label {
     color: #666;
   }
-  
-  ion-input {
-    --padding-start: 16px;
-  }
+
   
   ion-button {
     --background: #4285F4;

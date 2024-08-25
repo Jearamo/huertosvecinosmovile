@@ -4,8 +4,18 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
+    redirectTo: 'login',
+    pathMatch: 'full'
+  },
+  {
+    path: 'login',
+    loadChildren: () => import('./pages/login/login.module').then(m => m.LoginPageModule)
+  },
+  {
+    path: '',
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
-  },  {
+  },
+  {
     path: 'paginaperfil',
     loadChildren: () => import('./pages/paginaperfil/paginaperfil.module').then( m => m.PaginaperfilPageModule)
   },
@@ -48,6 +58,10 @@ const routes: Routes = [
   {
     path: 'adminpage',
     loadChildren: () => import('./pages/adminpage/adminpage.module').then( m => m.AdminpagePageModule)
+  },
+  {
+    path: 'recuperacion',
+    loadChildren: () => import('./pages/recuperacion/recuperacion.module').then( m => m.RecuperacionPageModule)
   }
 
 ];

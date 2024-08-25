@@ -18,7 +18,7 @@
       <ion-button expand="block" class="ion-margin-top" (click)="login()">Iniciar</ion-button>
     </form>
     <!-- EXTRA -->
-    <p class="forgot-password">Olvidaste tu contraseña?</p>
+    <p class="forgot-password" [routerLink]="['/recuperacion']">Olvidaste tu contraseña?</p>
     <p class="signup">No tienes cuenta? <a href="" [routerLink]="['/registro']">Registrate</a></p>
   </div>
 </ion-content>
