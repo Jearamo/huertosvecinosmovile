@@ -1,46 +1,68 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
+    <ion-title>Perfil</ion-title>
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>Ajuste de cuenta</ion-title>
+    <ion-buttons slot="end" *ngIf="userEmail !== 'Jehison1'">
+      <ion-button (click)="toggleEditMode()">
+        {{ editMode ? 'Cancelar' : 'Editar' }}
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <div class="ion-text-center ion-padding-top">
-    <ion-avatar>
-      <img src="assets/img/gatoguerra.jpg" alt="User Avatar">
-    </ion-avatar>
-    <h2>{{ userName }}</h2>
-    <p>{{userEmail}}</p>
-    <p>{{edad}} Años</p>
-  </div>
+<div *ngIf="this.userEmail =='Jehison1'">
+  <h1>Comuniquese con la administración para modificar sus datos</h1>
+</div>
 
-  <ion-list>
+<ion-content class="ion-padding">
+  <ion-item>
+    <ion-label position="stacked">Nombre de usuario</ion-label>
+    <ion-input [(ngModel)]="userName" [readonly]="!editMode"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="stacked">Correo electrónico</ion-label>
+    <ion-input [(ngModel)]="userEmail" readonly></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="stacked">Nombre</ion-label>
+    <ion-input [(ngModel)]="nombre" [readonly]="!editMode"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="stacked">Apellido</ion-label>
+    <ion-input [(ngModel)]="apellido" [readonly]="!editMode"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="stacked">Fecha de nacimiento</ion-label>
+    <ion-datetime [(ngModel)]="fechaNacimiento" [readonly]="!editMode" displayFormat="DD/MM/YYYY"></ion-datetime>
+  </ion-item>
+  
+  <ion-button expand="block" (click)="guardarCambios()" *ngIf="editMode">Guardar cambios</ion-button>
+    <div *ngIf="userEmail !== 'Jehison1'">
+    <ion-item-divider>
+      <ion-label>Cambiar Contraseña</ion-label>
+    </ion-item-divider>
+
     <ion-item>
-      <ion-label>Username</ion-label>
-      <ion-label>{{ userName }}</ion-label>
+      <ion-label position="stacked">Contraseña actual</ion-label>
+      <ion-input type="password" [(ngModel)]="currentPassword"></ion-input>
     </ion-item>
+
     <ion-item>
-      <ion-label>Nombre</ion-label>
-      <ion-label>{{ nombre }}</ion-label>
+      <ion-label position="stacked">Nueva contraseña</ion-label>
+      <ion-input type="password" [(ngModel)]="newPassword"></ion-input>
     </ion-item>
+
     <ion-item>
-      <ion-label>Apellido</ion-label>
-      <ion-label>{{ apellido }}</ion-label>
+      <ion-label position="stacked">Confirmar nueva contraseña</ion-label>
+      <ion-input type="password" [(ngModel)]="confirmNewPassword"></ion-input>
     </ion-item>
-    <ion-item>
-      <ion-label>Fecha de nacimiento</ion-label>
-      <ion-label>{{fechaNacimiento}}</ion-label>
-    </ion-item>
-    <ion-item>
-      <ion-label>Correo</ion-label>
-      <ion-label>{{userEmail}}</ion-label>
-    </ion-item>
-    <ion-item>
-      <ion-label>Fecha de inión</ion-label>
-      <ion-label>Enero 1, 2023</ion-label>
-    </ion-item>
-  </ion-list>
+
+    <ion-button expand="block" (click)="cambiarContrasena()">Cambiar Contraseña</ion-button>
+  </div>
 </ion-content>
