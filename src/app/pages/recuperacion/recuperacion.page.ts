@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-recuperacion',
@@ -6,10 +7,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./recuperacion.page.scss'],
 })
 export class RecuperacionPage implements OnInit {
+  
+  userEmail: string = '';
 
-  constructor() { }
+  constructor(private router: Router) { }
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  enviarCodigo() {
+    this.router.navigate(['/cambiopassword'], { queryParams: { email: this.userEmail } });
   }
-
 }

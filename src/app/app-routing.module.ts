@@ -62,7 +62,11 @@ const routes: Routes = [
   {
     path: 'recuperacion',
     loadChildren: () => import('./pages/recuperacion/recuperacion.module').then( m => m.RecuperacionPageModule)
+  },  {
+    path: 'cambiopassword',
+    loadChildren: () => import('./pages/cambiopassword/cambiopassword.module').then( m => m.CambiopasswordPageModule)
   }
+
 
 ];
 @NgModule({

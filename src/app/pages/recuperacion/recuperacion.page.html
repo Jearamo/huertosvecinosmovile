@@ -17,10 +17,10 @@
   <p>Introduce tu dirección de correo electrónico y te enviaremos un código de verificación para reestablecer tu contraseña.</p>
 
   <ion-item>
-    <ion-input label="Correo" labelPlacement="floating" placeholder="Ingrese su correo" type="email" required name="correo"></ion-input>
+    <ion-input label="Correo" labelPlacement="floating" placeholder="Ingrese su correo" type="email" required [(ngModel)]="userEmail"></ion-input>
   </ion-item>
 
-  <ion-button expand="block" class="submit-btn">
+  <ion-button expand="block" class="submit-btn" (click)="enviarCodigo()">
     Enviar código
   </ion-button>
 
