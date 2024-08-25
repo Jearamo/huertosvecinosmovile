@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-export const userName = 'Eskibidi';
 
 @Component({
   selector: 'app-tab1',
@@ -7,9 +6,21 @@ export const userName = 'Eskibidi';
   styleUrls: ['tab1.page.scss']
 })
 export class Tab1Page {
-
-  userName: string = userName;
+  userName: string = '';
 
   constructor() {}
 
+  ngOnInit() {
+    this.cargarDatosUsuario();
+  }
+
+  cargarDatosUsuario() {
+    // Recuperar el usuario actualmente logueado
+    const usuarioActual = JSON.parse(localStorage.getItem('usuarioActual') || '{}');
+    
+    if (Object.keys(usuarioActual).length > 0) {
+      this.userName = usuarioActual.nombreUsuario || '';
+      }
+  }
+  
 }

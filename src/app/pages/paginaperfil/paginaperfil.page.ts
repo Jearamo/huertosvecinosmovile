@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { userName } from '../../tab1/tab1.page';
 
 @Component({
   selector: 'app-paginaperfil',

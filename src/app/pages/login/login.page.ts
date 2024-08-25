@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-login',
@@ -14,11 +15,11 @@ export class LoginPage implements OnInit {
   correo: string = '';
   contrasena: string = '';
 
-  // Usuario predefinido
+  // Usuario admin
   validEmail: string = 'Jehison1';
   validPassword: string = 'admin1234';
 
-  constructor(private router: Router, private alertController: AlertController) { }
+  constructor(private router: Router, private alertController: AlertController, private cd: ChangeDetectorRef) { }
   // MOSTRAR CONTRASEÑA
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
@@ -30,11 +31,12 @@ export class LoginPage implements OnInit {
     // Verificar el usuario predefinido
     if (this.correo === this.validEmail && this.contrasena === this.validPassword) {
       localStorage.setItem('usuarioActual', JSON.stringify({
-        nombreUsuario: 'Usuario Predefinido',
+        nombreUsuario: 'Usuario administrador',
         correo: this.validEmail,
-        nombre: 'Usuario',
-        apellido: 'Predefinido',
-        fechaNacimiento: '1990-01-01' // Fecha de ejemplo
+        nombre: 'Jehison',
+        apellido: 'Arancibia',
+        fechaNacimiento: '1990-01-01', // Fecha de ejemplo
+        validAdmin: true
       }));
       this.router.navigate(['/tabs/tab1']);
       return;
