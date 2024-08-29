@@ -4,7 +4,7 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-buttons slot="end" *ngIf="userEmail !== 'Jehison1'">
+    <ion-buttons slot="end" *ngIf="userEmail !== 'admin@gmail.com'">
       <ion-button (click)="toggleEditMode()">
         {{ editMode ? 'Cancelar' : 'Editar' }}
       </ion-button>
@@ -12,7 +12,7 @@
   </ion-toolbar>
 </ion-header>
 
-<div *ngIf="this.userEmail =='Jehison1'">
+<div *ngIf="this.userEmail =='admin@gmail.com'">
   <h2 class="h1-avisador">Comuniquese con la administración para modificar sus datos</h2>
 </div>
 
@@ -43,7 +43,7 @@
   </ion-item>
   
   <ion-button expand="block" (click)="guardarCambios()" *ngIf="editMode">Guardar cambios</ion-button>
-    <div *ngIf="userEmail !== 'Jehison1'">
+    <div *ngIf="userEmail !== 'admin@gmail.com'">
     <ion-item-divider>
       <ion-label>Cambiar Contraseña</ion-label>
     </ion-item-divider>
