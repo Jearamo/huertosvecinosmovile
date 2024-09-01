@@ -7,39 +7,53 @@ import { Router } from '@angular/router';
   styleUrls: ['tab3.page.scss']
 })
 export class Tab3Page implements OnInit {
-
   userName: string = '';
   userEmail: string = '';
-  edad: number = 0;
   nombre: string = '';
   apellido: string = '';
   fechaNacimiento: string = '';
-  constructor(private router: Router) {
-    
-   }
+
+  constructor(private router: Router) { }
 
   ngOnInit() {
-    this.cargarDatosUsuario();
-  }
-  cargarDatosUsuario() {
-    // Recuperar el usuario actualmente logueado
-    const usuarioActual = JSON.parse(localStorage.getItem('usuarioActual') || '{}');
-    
-    if (Object.keys(usuarioActual).length > 0) {
-      this.userName = usuarioActual.nombreUsuario || '';
-      this.userEmail = usuarioActual.correo || '';
-      this.nombre = usuarioActual.nombre || '';
-      this.apellido = usuarioActual.apellido || '';
-      this.fechaNacimiento = usuarioActual.fechaNacimiento || '';
-      
+    const navigation = this.router.getCurrentNavigation();
+    if (navigation?.extras?.state) {
+      const state = navigation.extras.state as any;
+      this.userName = state.userName || 'Usuario';
+      this.userEmail = state.userEmail || '';
+      this.nombre = state.nombre || '';
+      this.apellido = state.apellido || '';
+      this.fechaNacimiento = state.fechaNacimiento || '';
     }
   }
 
-  logout(){
-    this.router.navigate(['/login']);
+  goToPerfil() {
+    this.router.navigate(['/paginaperfil'], {
+      state: {
+        userName: this.userName,
+        userEmail: this.userEmail,
+        nombre: this.nombre,
+        apellido: this.apellido,
+        fechaNacimiento: this.fechaNacimiento
+      }
+    });
   }
 
-  goadmin(){
-    this.router.navigate(['/adminpage']);
+  goadmin() {
+    // Navegar a la página de admin, puedes cambiar el URL a la página correcta
+    this.router.navigate(['/admin'], {
+      state: {
+        userName: this.userName,
+        userEmail: this.userEmail,
+        nombre: this.nombre,
+        apellido: this.apellido,
+        fechaNacimiento: this.fechaNacimiento
+      }
+    });
+  }
+
+  logout() {
+    // Implementa la lógica de logout según sea necesario
+    this.router.navigate(['/login']);
   }
 }

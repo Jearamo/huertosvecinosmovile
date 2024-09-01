@@ -14,7 +14,7 @@
   </ion-header>
   <!-- TARJETA DE CUENTA -->
   <p class="titulo-descripcion">General</p>
-  <ion-card [routerLink]="['/paginaperfil']">
+  <ion-card (click)="goToPerfil()">
     <ion-card-header>
       <ion-card-title>
         <ion-icon name="person-outline" class="first-icon-config"></ion-icon>

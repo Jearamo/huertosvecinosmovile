@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
-import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
@@ -14,44 +13,62 @@ export class LoginPage implements OnInit {
   contrasena: string = '';
 
   // Usuario admin
+  adminName: string = 'Administrador';
+  adminApellido: string = 'ApellidoAdmin';
+  adminNombre: string = 'NombreAdmin';
+  adminNaci: string = '01/01/1980';
   validEmail: string = 'admin@gmail.com';
   validPassword: string = 'admin1234';
 
-  constructor(private router: Router, private alertController: AlertController, private navCtrl: NavController ) { }
+  // Usuario normal (ejemplo)
+  userName: string = 'Usuario';
+  usuarioApellido: string = 'ApellidoUsuario';
+  usuarioNombre: string = 'NombreUsuario';
+  usuarioNaci: string = '01/01/2000';
+  normalEmail: string = 'usuario@gmail.com';
+  normalPassword: string = 'usuario123';
+
+  constructor(private router: Router, private alertController: AlertController) { }
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
     const passwordInput = document.querySelector('ion-input[type="password"]') as HTMLIonInputElement;
-    passwordInput.type = this.showPassword ? 'text' : 'password';
+    if (passwordInput) {
+      passwordInput.type = this.showPassword ? 'text' : 'password';
+    }
   }
 
   async login() {
-    // Verificar el usuario predefinido
-    if (this.correo === this.validEmail && this.contrasena === this.validPassword) {
-      localStorage.setItem('usuarioActual', JSON.stringify({
-        nombreUsuario: 'Usuario administrador',
-        correo: this.validEmail,
-        nombre: 'Jehison',
-        apellido: 'Arancibia',
-        fechaNacimiento: '1990-01-01',
-        contrasena: this.validPassword,
-        validAdmin: true
-      }));
-      this.navCtrl.navigateRoot('/tabs/tab1', { animated: false }).then(() => {
-        window.location.reload();
+    if (!this.correo.trim() || !this.contrasena.trim()) {
+      const alert = await this.alertController.create({
+        header: 'Campos vacíos',
+        message: 'Por favor, rellena todos los campos',
+        buttons: ['OK']
       });
+      await alert.present();
       return;
     }
 
-    // Verificar usuarios registrados
-    const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
-    const usuarioEncontrado = usuarios.find(
-      (u: any) => u.correo === this.correo && u.contrasena === this.contrasena
-    );
-
-    if (usuarioEncontrado) {
-      localStorage.setItem('usuarioActual', JSON.stringify(usuarioEncontrado));
-      this.router.navigate(['/tabs/tab1']);
+    if (this.correo === this.validEmail && this.contrasena === this.validPassword) {
+      this.router.navigate(['/tabs/tab1'], {
+        state: {
+          userName: this.adminName,
+          userEmail: this.validEmail,
+          nombre: this.adminNombre,
+          apellido: this.adminApellido,
+          fechaNacimiento: this.adminNaci
+        }
+      });
+    } else if (this.correo === this.normalEmail && this.contrasena === this.normalPassword) {
+      this.router.navigate(['/tabs/tab1'], {
+        state: {
+          userName: this.userName,
+          userEmail: this.normalEmail,
+          nombre: this.usuarioNombre,
+          apellido: this.usuarioApellido,
+          fechaNacimiento: this.usuarioNaci
+        }
+      });
     } else {
       const alert = await this.alertController.create({
         header: 'Error',
@@ -62,6 +79,5 @@ export class LoginPage implements OnInit {
     }
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 }
