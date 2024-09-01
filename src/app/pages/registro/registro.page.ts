@@ -18,6 +18,7 @@ export class RegistroPage {
   };
   confirmarContrasena: string = '';
   showPassword: boolean = false;
+  aceptoTerminos: boolean = false; // Propiedad para el checkbox
 
   constructor(private router: Router, private alertController: AlertController) { }
 
@@ -26,6 +27,14 @@ export class RegistroPage {
   }
 
   async registrar() {
+    // Validar si todos los campos están llenos
+    const camposVacios = Object.values(this.nuevoUsuario).some(value => !value.trim());
+    
+    if (camposVacios || !this.confirmarContrasena.trim()) {
+      await this.mostrarAlerta('Campos vacíos', 'Por favor, rellena todos los campos');
+      return;
+    }
+
     // Validar si las contraseñas coinciden
     if (this.nuevoUsuario.contrasena !== this.confirmarContrasena) {
       await this.mostrarAlerta('Error', 'Las contraseñas no coinciden.');
@@ -50,10 +59,11 @@ export class RegistroPage {
       return;
     }
 
-    // Registrar el nuevo usuario
-    let usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
-    usuarios.push(this.nuevoUsuario);
-    localStorage.setItem('usuarios', JSON.stringify(usuarios));
+    // Validar si el checkbox está marcado
+    if (!this.aceptoTerminos) {
+      await this.mostrarAlerta('Aceptar términos', 'Debes aceptar los términos para continuar.');
+      return;
+    }
 
     await this.mostrarAlerta('Éxito', 'Usuario registrado correctamente.');
 
