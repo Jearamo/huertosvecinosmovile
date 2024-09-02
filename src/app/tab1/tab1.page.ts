@@ -12,6 +12,7 @@ export class Tab1Page implements OnInit {
   nombre: string = '';
   apellido: string = '';
   fechaNacimiento: string = '';
+  password: string = '';
 
   constructor(private router: Router) { }
 
@@ -24,6 +25,7 @@ export class Tab1Page implements OnInit {
       this.nombre = state.nombre || '';
       this.apellido = state.apellido || '';
       this.fechaNacimiento = state.fechaNacimiento || '';
+      this.password = state.password || '';
     }
   }
 
@@ -34,9 +36,24 @@ export class Tab1Page implements OnInit {
         userEmail: this.userEmail,
         nombre: this.nombre,
         apellido: this.apellido,
-        fechaNacimiento: this.fechaNacimiento
+        fechaNacimiento: this.fechaNacimiento,
+        password: this.password
       }
     };
     this.router.navigate(['/tabs/tab3'], navigationExtras);
+  }
+
+  irPerfil() {
+    const navigationExtras: NavigationExtras = {
+      state: {
+        userName: this.userName,
+        userEmail: this.userEmail,
+        nombre: this.nombre,
+        apellido: this.apellido,
+        fechaNacimiento: this.fechaNacimiento,
+        password: this.password
+      }
+    };
+    this.router.navigate(['/paginaperfil'], navigationExtras);
   }
 }

@@ -12,6 +12,7 @@ export class Tab3Page implements OnInit {
   nombre: string = '';
   apellido: string = '';
   fechaNacimiento: string = '';
+  password: string = '';
 
   constructor(private router: Router) { }
 
@@ -24,6 +25,7 @@ export class Tab3Page implements OnInit {
       this.nombre = state.nombre || '';
       this.apellido = state.apellido || '';
       this.fechaNacimiento = state.fechaNacimiento || '';
+      this.password = state.password || '';
     }
   }
 
@@ -34,14 +36,15 @@ export class Tab3Page implements OnInit {
         userEmail: this.userEmail,
         nombre: this.nombre,
         apellido: this.apellido,
-        fechaNacimiento: this.fechaNacimiento
+        fechaNacimiento: this.fechaNacimiento,
+        password: this.password
       }
     });
   }
 
   goadmin() {
-    // Navegar a la página de admin, puedes cambiar el URL a la página correcta
-    this.router.navigate(['/admin'], {
+    // ir a la página de admin
+    this.router.navigate(['/adminpage'], {
       state: {
         userName: this.userName,
         userEmail: this.userEmail,
@@ -53,7 +56,7 @@ export class Tab3Page implements OnInit {
   }
 
   logout() {
-    // Implementa la lógica de logout según sea necesario
-    this.router.navigate(['/login']);
-  }
-}
+    this.router.navigate(['/login']).then(() => {
+      window.location.reload();
+    });
+}}

@@ -21,12 +21,12 @@ export class LoginPage implements OnInit {
   validPassword: string = 'admin1234';
 
   // Usuario normal (ejemplo)
-  userName: string = 'Usuario';
-  usuarioApellido: string = 'ApellidoUsuario';
-  usuarioNombre: string = 'NombreUsuario';
+  userName: string = 'Juan';
+  usuarioApellido: string = 'Perez';
+  usuarioNombre: string = 'Juanito';
   usuarioNaci: string = '01/01/2000';
-  normalEmail: string = 'usuario@gmail.com';
-  normalPassword: string = 'usuario123';
+  normalEmail: string = 'juanito@gmail.com';
+  normalPassword: string = 'juanito123';
 
   constructor(private router: Router, private alertController: AlertController) { }
 
@@ -56,7 +56,8 @@ export class LoginPage implements OnInit {
           userEmail: this.validEmail,
           nombre: this.adminNombre,
           apellido: this.adminApellido,
-          fechaNacimiento: this.adminNaci
+          fechaNacimiento: this.adminNaci,
+          password: this.validPassword
         }
       });
     } else if (this.correo === this.normalEmail && this.contrasena === this.normalPassword) {
@@ -66,7 +67,8 @@ export class LoginPage implements OnInit {
           userEmail: this.normalEmail,
           nombre: this.usuarioNombre,
           apellido: this.usuarioApellido,
-          fechaNacimiento: this.usuarioNaci
+          fechaNacimiento: this.usuarioNaci,
+          password: this.normalPassword
         }
       });
     } else {

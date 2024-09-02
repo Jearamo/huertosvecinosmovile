@@ -4,7 +4,7 @@
     <ion-title class="titulo-inicio">Huertos vecinos</ion-title>
     <!-- ICONO DE PERFIL -->
     <ion-buttons slot="end"> {{ userName }}
-      <ion-button [routerLink]="['/paginaperfil']">
+      <ion-button (click)="irPerfil()">
         <ion-icon slot="icon-only" name="person-circle-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -24,6 +24,7 @@
   <h1>hola</h1>
 
   <app-explore-container name="Postea tu primera publicacion"></app-explore-container>
+  <h4>{{ password }}</h4>
 </ion-content>
 
 <!-- FOOTER --> 

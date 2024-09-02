@@ -49,7 +49,8 @@
       <ion-card-title><ion-icon name="analytics-outline" class="first-icon-config"></ion-icon>Alpha 24.08.2024</ion-card-title>
     </ion-card-header>
   </ion-card>
-  <!-- TARJETA DE SOPORTE -->
+
+  <!-- TARJETA DE ADMIN -->
   <div *ngIf="this.userEmail =='admin@gmail.com'">
     <p class="titulo-descripcion">Administración</p>
     <ion-card>
@@ -58,6 +59,7 @@
       </ion-card-header>
     </ion-card>
   </div>
+  <!-- CERRAR SESIÓN -->
   <ion-button color="danger" expand="block" (click)="logout()" class="boton-cerrar">
     <ion-icon name="log-out-outline" slot="start"></ion-icon>
     Cerrar Sesión

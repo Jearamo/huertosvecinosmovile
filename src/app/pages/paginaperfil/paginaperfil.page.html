@@ -15,7 +15,7 @@
 <div *ngIf="this.userEmail =='admin@gmail.com'">
   <h2 class="h1-avisador">Comuniquese con la administración para modificar sus datos</h2>
 </div>
-<h3>{{ userName }}</h3>
+
 <ion-content class="ion-padding">
   <ion-item>
     <ion-label position="stacked">Nombre de usuario</ion-label>
@@ -44,7 +44,8 @@
   
   <ion-button expand="block" (click)="guardarCambios()" *ngIf="editMode">Guardar cambios</ion-button>
     <div *ngIf="userEmail !== 'admin@gmail.com'">
-    <ion-item-divider>
+      <!-- CAMBIA CONTRASEÑA -->
+    <ion-item-divider class="cambiador-contra">
       <ion-label>Cambiar Contraseña</ion-label>
     </ion-item-divider>
 
