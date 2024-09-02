@@ -13,7 +13,7 @@ export class PaginaperfilPage implements OnInit {
   edad: number = 0;
   nombre: string = '';
   apellido: string = '';
-  fechaNacimiento: Date = new Date(); // Mantén esto como un objeto Date
+  fechaNacimiento: Date = new Date();
   editMode: boolean = false;
 
   // contraseñas
@@ -66,7 +66,7 @@ export class PaginaperfilPage implements OnInit {
     }
 
     await this.mostrarAlerta('Éxito', 'Perfil actualizado correctamente');
-    this.toggleEditMode(); // Desactivar el modo de edición después de guardar cambios
+    this.toggleEditMode();
   }
 
   tieneEdadSuficiente(fechaNacimiento: Date): boolean {

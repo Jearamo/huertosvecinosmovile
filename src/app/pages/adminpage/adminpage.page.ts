@@ -15,24 +15,27 @@ export class AdminpagePage implements OnInit {
   ];
   newPost: any = { title: '', author: '', content: '' };
 
+  // ARRAY PARA ALMACENAR LOS USUARIOS ACTIVOS
+  activos: any[] = [
+    { author: 'Antonio03', estado: 'Activo' },
+    { author: 'Matias_', estado: 'Activo' },
+  ];
+
+  // ARRAY PARA ALMACENAR LOS USUARIOS BANEADOS
+  baneados: any[] = [
+    { author: 'Juanito', estado: 'Baneado' },
+    { author: 'alberto', estado: 'Baneado' },
+  ];
+
   constructor(private alertController: AlertController, private toastController: ToastController) { }
   // AÑADOR UN POST
   async addPost() {
     if (this.newPost.title && this.newPost.author && this.newPost.content) {
-      // Crear una copia del newPost y añadir la fecha actual
       const postToAdd = { ...this.newPost, date: new Date() };
-      
-      // Añadir el nuevo post al principio del array
       this.posts.unshift(postToAdd);
-      
-      // Limpiar el formulario
       this.newPost = { title: '', author: '', content: '' };
-      
-      // Cambiar la vista a la lista de posts
       this.currentView = 'list';
-      
       console.log('Post añadido:', postToAdd);
-
       // Mostrar un toast de éxito
       const toast = await this.toastController.create({
         message: 'Publicación añadida con éxito',
@@ -54,8 +57,8 @@ export class AdminpagePage implements OnInit {
     }
   }
 
+  // EDICIÓN DE POSTS
   editPost(index: number) {
-    // Aquí iría la lógica para editar un post
     console.log('Editar post:', this.posts[index]);
   }
 
@@ -83,8 +86,58 @@ export class AdminpagePage implements OnInit {
     });
     await alert.present();
   }
-  
 
+  // BANEAR USUARIOS
+  async banUser(index: number) {
+    const alert = await this.alertController.create({
+      header: 'Confirmar baneo',
+      message: '¿Estás seguro de que quieres banear a este usuario?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        },
+        {
+          text: 'Banear',
+          handler: () => {
+            this.toastController.create({
+              message: 'Usuario baneado',
+              duration: 2000,
+              color: 'danger'
+            }).then(toast => toast.present());
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  // DESBANEAR USUARIOS
+  async unbanUser(index: number) {
+    const alert = await this.alertController.create({
+      header: 'Confirmar desbaneo',
+      message: '¿Estás seguro de que quieres desbanear a este usuario?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        },
+        {
+          text: 'Desbanear',
+          handler: () => {
+            this.posts.splice(index, 1);
+            this.toastController.create({
+              message: 'Usuario desbaneado',
+              duration: 2000,
+              color: 'success'
+            }).then(toast => toast.present());
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+  
   ngOnInit() {
   }
 

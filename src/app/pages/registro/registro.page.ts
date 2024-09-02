@@ -18,7 +18,7 @@ export class RegistroPage {
   };
   confirmarContrasena: string = '';
   showPassword: boolean = false;
-  aceptoTerminos: boolean = false; // Propiedad para el checkbox
+  aceptoTerminos: boolean = false;
 
   constructor(private router: Router, private alertController: AlertController) { }
 
@@ -27,7 +27,6 @@ export class RegistroPage {
   }
 
   async registrar() {
-    // Validar si todos los campos están llenos
     const camposVacios = Object.values(this.nuevoUsuario).some(value => !value.trim());
     
     if (camposVacios || !this.confirmarContrasena.trim()) {
@@ -35,31 +34,26 @@ export class RegistroPage {
       return;
     }
 
-    // Validar si las contraseñas coinciden
     if (this.nuevoUsuario.contrasena !== this.confirmarContrasena) {
       await this.mostrarAlerta('Error', 'Las contraseñas no coinciden.');
       return;
     }
 
-    // Validar formato del correo electrónico
     if (!this.validarCorreo(this.nuevoUsuario.correo)) {
       await this.mostrarAlerta('Error', 'Por favor, ingrese un correo electrónico válido.');
       return;
     }
 
-    // Validar longitud de la contraseña
     if (this.nuevoUsuario.contrasena.length < 8) {
       await this.mostrarAlerta('Error', 'La contraseña debe tener al menos 8 caracteres.');
       return;
     }
 
-    // Validar edad mínima
     if (!this.tieneEdadSuficiente(this.nuevoUsuario.fechaNacimiento)) {
       await this.mostrarAlerta('Error', 'Debes tener al menos 16 años para registrarte.');
       return;
     }
 
-    // Validar si el checkbox está marcado
     if (!this.aceptoTerminos) {
       await this.mostrarAlerta('Aceptar términos', 'Debes aceptar los términos para continuar.');
       return;

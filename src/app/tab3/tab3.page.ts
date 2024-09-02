@@ -43,7 +43,6 @@ export class Tab3Page implements OnInit {
   }
 
   goadmin() {
-    // ir a la página de admin
     this.router.navigate(['/adminpage'], {
       state: {
         userName: this.userName,
