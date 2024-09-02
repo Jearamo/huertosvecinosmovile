@@ -15,8 +15,10 @@ export class PaginaperfilPage implements OnInit {
   apellido: string = '';
   fechaNacimiento: string = '';
   editMode: boolean = false;
-  currentPassword: string = '';
 
+  // contraseñas
+  currentPassword: string = '';
+  inputCurrentPassword: string = '';
   newPassword: string = '';
   confirmNewPassword: string = '';
 
@@ -53,7 +55,6 @@ export class PaginaperfilPage implements OnInit {
   }
 
   async guardarCambios() {
-    // Implementación para guardar cambios
     if (!this.userName || !this.userEmail || !this.nombre || !this.apellido || !this.fechaNacimiento) {
       await this.mostrarAlerta('Error', 'Por favor, complete todos los campos.');
       return;
@@ -62,9 +63,18 @@ export class PaginaperfilPage implements OnInit {
   }
 
   async cambiarContrasena() {
-    // Implementación para cambiar la contraseña
-    if (this.currentPassword !== this.currentPassword) {
+    if (!this.inputCurrentPassword || !this.newPassword || !this.confirmNewPassword) {
+      await this.mostrarAlerta('Error', 'Por favor, complete todos los campos de la contraseña.');
+      return;
+    }
+
+    if (this.inputCurrentPassword !== this.currentPassword) {
       await this.mostrarAlerta('Error', 'La contraseña actual es incorrecta.');
+      return;
+    }
+
+    if (this.newPassword.length < 8) {
+      await this.mostrarAlerta('Error', 'La nueva contraseña debe tener al menos 8 caracteres.');
       return;
     }
 
@@ -72,6 +82,9 @@ export class PaginaperfilPage implements OnInit {
       await this.mostrarAlerta('Error', 'La nueva contraseña y la confirmación no coinciden.');
       return;
     }
+
+    // Aquí puedes agregar la lógica para guardar la nueva contraseña
+
     await this.mostrarAlerta('Éxito', 'La contraseña se ha cambiado correctamente.');
   }
 

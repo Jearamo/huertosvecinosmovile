@@ -12,7 +12,7 @@
   </ion-toolbar>
 </ion-header>
 
-<div *ngIf="this.userEmail =='admin@gmail.com'">
+<div *ngIf="this.userEmail == 'admin@gmail.com'">
   <h2 class="h1-avisador">Comuniquese con la administración para modificar sus datos</h2>
 </div>
 
@@ -43,15 +43,15 @@
   </ion-item>
   
   <ion-button expand="block" (click)="guardarCambios()" *ngIf="editMode">Guardar cambios</ion-button>
-    <div *ngIf="userEmail !== 'admin@gmail.com'">
-      <!-- CAMBIA CONTRASEÑA -->
+  
+  <div *ngIf="userEmail !== 'admin@gmail.com'">
     <ion-item-divider class="cambiador-contra">
       <ion-label>Cambiar Contraseña</ion-label>
     </ion-item-divider>
 
     <ion-item>
       <ion-label position="stacked">Contraseña actual</ion-label>
-      <ion-input type="password" [(ngModel)]="currentPassword"></ion-input>
+      <ion-input type="password" [(ngModel)]="inputCurrentPassword"></ion-input>
     </ion-item>
 
     <ion-item>
