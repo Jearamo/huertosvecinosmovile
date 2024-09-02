@@ -13,7 +13,7 @@ export class PaginaperfilPage implements OnInit {
   edad: number = 0;
   nombre: string = '';
   apellido: string = '';
-  fechaNacimiento: string = '';
+  fechaNacimiento: Date = new Date(); // Mantén esto como un objeto Date
   editMode: boolean = false;
 
   // contraseñas
@@ -32,7 +32,7 @@ export class PaginaperfilPage implements OnInit {
       this.userEmail = state.userEmail || '';
       this.nombre = state.nombre || '';
       this.apellido = state.apellido || '';
-      this.fechaNacimiento = state.fechaNacimiento || '';
+      this.fechaNacimiento = state.fechaNacimiento ? new Date(state.fechaNacimiento) : new Date();
       this.calcularEdad();
       this.currentPassword = state.password || '';
     }
@@ -69,7 +69,7 @@ export class PaginaperfilPage implements OnInit {
     this.toggleEditMode(); // Desactivar el modo de edición después de guardar cambios
   }
 
-  tieneEdadSuficiente(fechaNacimiento: string): boolean {
+  tieneEdadSuficiente(fechaNacimiento: Date): boolean {
     const hoy = new Date();
     const fechaNac = new Date(fechaNacimiento);
     let edad = hoy.getFullYear() - fechaNac.getFullYear();
@@ -102,7 +102,6 @@ export class PaginaperfilPage implements OnInit {
       await this.mostrarAlerta('Error', 'La nueva contraseña y la confirmación no coinciden.');
       return;
     }
-
 
     await this.mostrarAlerta('Éxito', 'La contraseña se ha cambiado correctamente.');
   }

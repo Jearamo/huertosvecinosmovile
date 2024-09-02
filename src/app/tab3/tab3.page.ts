@@ -11,7 +11,7 @@ export class Tab3Page implements OnInit {
   userEmail: string = '';
   nombre: string = '';
   apellido: string = '';
-  fechaNacimiento: string = '';
+  fechaNacimiento: Date = new Date();
   password: string = '';
 
   constructor(private router: Router) { }
@@ -24,7 +24,7 @@ export class Tab3Page implements OnInit {
       this.userEmail = state.userEmail || '';
       this.nombre = state.nombre || '';
       this.apellido = state.apellido || '';
-      this.fechaNacimiento = state.fechaNacimiento || '';
+      this.fechaNacimiento = state.fechaNacimiento ? new Date(state.fechaNacimiento) : new Date();
       this.password = state.password || '';
     }
   }
@@ -36,7 +36,7 @@ export class Tab3Page implements OnInit {
         userEmail: this.userEmail,
         nombre: this.nombre,
         apellido: this.apellido,
-        fechaNacimiento: this.fechaNacimiento,
+        fechaNacimiento: this.fechaNacimiento.toISOString(),
         password: this.password
       }
     });

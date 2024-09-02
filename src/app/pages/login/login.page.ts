@@ -16,7 +16,7 @@ export class LoginPage implements OnInit {
   adminName: string = 'Administrador';
   adminApellido: string = 'ApellidoAdmin';
   adminNombre: string = 'NombreAdmin';
-  adminNaci: string = '01/01/1980';
+  adminNaci: Date = new Date('2003-06-30');
   validEmail: string = 'admin@gmail.com';
   validPassword: string = 'admin1234';
 
@@ -24,11 +24,11 @@ export class LoginPage implements OnInit {
   userName: string = 'Juanito';
   usuarioApellido: string = 'Perez';
   usuarioNombre: string = 'Juan';
-  usuarioNaci: string = '01/01/2000';
+  usuarioNaci: Date = new Date('2004-06-30');
   normalEmail: string = 'juanito@gmail.com';
   normalPassword: string = 'juanito123';
 
-  constructor(private router: Router, private alertController: AlertController) { }
+  constructor(private router: Router, private alertController: AlertController) {}
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
@@ -43,7 +43,7 @@ export class LoginPage implements OnInit {
       const alert = await this.alertController.create({
         header: 'Campos vacíos',
         message: 'Por favor, rellena todos los campos',
-        buttons: ['OK']
+        buttons: ['OK'],
       });
       await alert.present();
       return;
@@ -56,9 +56,9 @@ export class LoginPage implements OnInit {
           userEmail: this.validEmail,
           nombre: this.adminNombre,
           apellido: this.adminApellido,
-          fechaNacimiento: this.adminNaci,
-          password: this.validPassword
-        }
+          fechaNacimiento: this.adminNaci.toISOString(),
+          password: this.validPassword,
+        },
       });
     } else if (this.correo === this.normalEmail && this.contrasena === this.normalPassword) {
       this.router.navigate(['/tabs/tab1'], {
@@ -67,19 +67,19 @@ export class LoginPage implements OnInit {
           userEmail: this.normalEmail,
           nombre: this.usuarioNombre,
           apellido: this.usuarioApellido,
-          fechaNacimiento: this.usuarioNaci,
-          password: this.normalPassword
-        }
+          fechaNacimiento: this.usuarioNaci.toISOString(),
+          password: this.normalPassword,
+        },
       });
     } else {
       const alert = await this.alertController.create({
         header: 'Error',
         message: 'Correo o contraseña incorrectos',
-        buttons: ['OK']
+        buttons: ['OK'],
       });
       await alert.present();
     }
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 }
