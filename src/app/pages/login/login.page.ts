@@ -21,9 +21,9 @@ export class LoginPage implements OnInit {
   validPassword: string = 'admin1234';
 
   // Usuario normal (ejemplo)
-  userName: string = 'Juan';
+  userName: string = 'Juanito';
   usuarioApellido: string = 'Perez';
-  usuarioNombre: string = 'Juanito';
+  usuarioNombre: string = 'Juan';
   usuarioNaci: string = '01/01/2000';
   normalEmail: string = 'juanito@gmail.com';
   normalPassword: string = 'juanito123';

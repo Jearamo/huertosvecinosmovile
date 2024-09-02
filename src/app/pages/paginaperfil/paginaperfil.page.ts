@@ -59,7 +59,26 @@ export class PaginaperfilPage implements OnInit {
       await this.mostrarAlerta('Error', 'Por favor, complete todos los campos.');
       return;
     }
+
+    if (!this.tieneEdadSuficiente(this.fechaNacimiento)) {
+      await this.mostrarAlerta('Error', 'La edad debe de ser de al menos 16 años.');
+      return;
+    }
+
     await this.mostrarAlerta('Éxito', 'Perfil actualizado correctamente');
+  }
+
+  tieneEdadSuficiente(fechaNacimiento: string): boolean {
+    const hoy = new Date();
+    const fechaNac = new Date(fechaNacimiento);
+    let edad = hoy.getFullYear() - fechaNac.getFullYear();
+    const m = hoy.getMonth() - fechaNac.getMonth();
+    
+    if (m < 0 || (m === 0 && hoy.getDate() < fechaNac.getDate())) {
+      edad--;
+    }
+    
+    return edad >= 16;
   }
 
   async cambiarContrasena() {
