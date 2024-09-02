@@ -14,6 +14,7 @@ export class CambiopasswordPage implements OnInit {
   newPassword: string = '';
   confirmNewPassword: string = '';
   readonly expectedSecretCode: string = '12345';
+  showPassword: boolean = false;
 
   constructor(private route: ActivatedRoute, private alertController: AlertController) { }
 
@@ -23,17 +24,23 @@ export class CambiopasswordPage implements OnInit {
     });
   }
 
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+
   async cambiarContrasena() {
+    if (!this.secretCode.trim() || !this.newPassword.trim() || !this.confirmNewPassword.trim()) {
+      await this.mostrarAlerta('Aviso', 'Por favor, llena todos los campos.');
+      return;
+    }
+
     if (this.secretCode !== this.expectedSecretCode) {
       await this.mostrarAlerta('Error', 'El código secreto es incorrecto.');
       return;
     }
 
-    let usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
-    const usuario = usuarios.find((u: any) => u.correo === this.userEmail);
-
-    if (!usuario) {
-      await this.mostrarAlerta('Error', 'No se encontró un usuario con ese correo electrónico.');
+    if (this.newPassword.length < 8) {
+      await this.mostrarAlerta('Error', 'La nueva contraseña debe tener al menos 8 caracteres.');
       return;
     }
 
@@ -41,17 +48,6 @@ export class CambiopasswordPage implements OnInit {
       await this.mostrarAlerta('Error', 'La nueva contraseña y la confirmación no coinciden.');
       return;
     }
-
-    usuario.contrasena = this.newPassword;
-    const index = usuarios.findIndex((u: any) => u.correo === this.userEmail);
-    if (index !== -1) {
-      usuarios[index] = usuario;
-      localStorage.setItem('usuarios', JSON.stringify(usuarios));
-    }
-
-    this.secretCode = '';
-    this.newPassword = '';
-    this.confirmNewPassword = '';
 
     await this.mostrarAlerta('Éxito', 'La contraseña se ha cambiado correctamente.');
   }

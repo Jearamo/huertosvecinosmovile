@@ -16,21 +16,27 @@ export class RecuperacionPage implements OnInit {
   ngOnInit() {}
 
   async enviarCodigo() {
-    // Verifica si el usuario ingresado es "Jehison1"
-    if (this.userEmail === 'Jehison1') {
+    // Verifica si el campo de correo electrónico está vacío
+    if (!this.userEmail.trim()) {
+      await this.mostrarAlerta('Aviso', 'Por favor, ingresa tu correo electrónico.');
+      return;
+    }
+
+    // Verifica si el usuario ingresado es "admin@gmail.com"
+    if (this.userEmail === 'admin@gmail.com') {
       await this.mostrarAlerta('Aviso', 'No puedes cambiar la contraseña de este usuario.');
       return;
     }
 
-    // Simulación de verificación de correo electrónico en localStorage
-    const usuarioActual = JSON.parse(localStorage.getItem('usuarioActual') || '{}');
-    if (usuarioActual.correo !== this.userEmail) {
-      await this.mostrarAlerta('Error', 'No se encontró un usuario con ese correo electrónico.');
+    // Verifica si el usuario ingresado es "juanito@gmail.com"
+    if (this.userEmail === 'juanito@gmail.com') {
+      // Navega a la página de cambio de contraseña con el correo
+      this.router.navigate(['/cambiopassword'], { queryParams: { email: this.userEmail } });
       return;
     }
 
-    // Si el usuario existe y no es "Jehison1", navega a la página de cambio de contraseña con el correo.
-    this.router.navigate(['/cambiopassword'], { queryParams: { email: this.userEmail } });
+    // Si el correo electrónico no coincide con ninguno de los valores permitidos, muestra una alerta
+    await this.mostrarAlerta('Error', 'No se encontró un usuario con ese correo electrónico.');
   }
 
   async mostrarAlerta(header: string, message: string) {
