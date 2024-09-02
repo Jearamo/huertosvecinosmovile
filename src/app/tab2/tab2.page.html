@@ -1,17 +1,22 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Pagina 2
+      Crea una publicación
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 2</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <app-explore-container name="PÁGINA DE CREACIÓN"></app-explore-container>
+<ion-content>
+  <section>
+    <div class="example-button-row">
+      <button mat-stroked-button>Publicar</button>
+    </div>
+  </section>
+  <ion-item>
+    <ion-input label="título" labelPlacement="floating" placeholder="Ingrese el título" type="text required"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-input label="contenido" labelPlacement="floating" placeholder="cuerpo de texto" type="text required" style="height: 20rem;"></ion-input>
+  </ion-item>
+  <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="upload"></mat-icon>
 </ion-content>

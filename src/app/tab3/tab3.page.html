@@ -1,4 +1,4 @@
-<ion-header [translucent]="true">
+<ion-header [translucent]="true" class="header-ajustes">
   <ion-toolbar>
     <ion-title>
       Ajústes
@@ -61,7 +61,7 @@
   </div>
   <!-- CERRAR SESIÓN -->
   <ion-button color="danger" expand="block" (click)="logout()" class="boton-cerrar">
-    <ion-icon name="log-out-outline" slot="start"></ion-icon>
+    <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="logout" class="icon-cierre"></mat-icon>
     Cerrar Sesión
   </ion-button>
 </ion-content>
