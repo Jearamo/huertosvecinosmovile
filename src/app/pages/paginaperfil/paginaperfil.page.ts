@@ -61,11 +61,12 @@ export class PaginaperfilPage implements OnInit {
     }
 
     if (!this.tieneEdadSuficiente(this.fechaNacimiento)) {
-      await this.mostrarAlerta('Error', 'La edad debe de ser de al menos 16 años.');
+      await this.mostrarAlerta('Error', 'Debes tener al menos 16 años para actualizar el perfil.');
       return;
     }
 
     await this.mostrarAlerta('Éxito', 'Perfil actualizado correctamente');
+    this.toggleEditMode(); // Desactivar el modo de edición después de guardar cambios
   }
 
   tieneEdadSuficiente(fechaNacimiento: string): boolean {
@@ -102,7 +103,6 @@ export class PaginaperfilPage implements OnInit {
       return;
     }
 
-    // Aquí puedes agregar la lógica para guardar la nueva contraseña
 
     await this.mostrarAlerta('Éxito', 'La contraseña se ha cambiado correctamente.');
   }
