@@ -9,14 +9,14 @@
 <ion-content>
 
   <section>
-    <button mat-stroked-button class="align-right" [routerLink]="['/exito']">Publicar</button>
+    <button mat-stroked-button class="align-right" (click)="publicar()" class="align-right">Publicar</button>
   </section>
 
   <ion-item>
-    <ion-input label="título" labelPlacement="floating" placeholder="Ingrese el título" type="text" required></ion-input>
+    <ion-input [(ngModel)]="titulo" label="título" labelPlacement="floating" placeholder="Ingrese el título" type="text" required></ion-input>
   </ion-item>
   <ion-item>
-    <ion-textarea label="contenido" labelPlacement="floating" placeholder="Cuerpo de texto" auto-grow="true" required></ion-textarea>
+    <ion-textarea [(ngModel)]="contenido" label="contenido" labelPlacement="floating" placeholder="Cuerpo de texto" auto-grow="true" required></ion-textarea>
   </ion-item>  
   <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="upload" class="subir-archivo"></mat-icon>
 </ion-content>
