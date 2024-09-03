@@ -5,7 +5,7 @@ const routes: Routes = [
   {
     path: '',
     redirectTo: 'login',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: 'login',
@@ -17,58 +17,66 @@ const routes: Routes = [
   },
   {
     path: 'paginaperfil',
-    loadChildren: () => import('./pages/paginaperfil/paginaperfil.module').then( m => m.PaginaperfilPageModule)
+    loadChildren: () => import('./pages/paginaperfil/paginaperfil.module').then(m => m.PaginaperfilPageModule)
   },
   {
     path: 'paginacrear',
-    loadChildren: () => import('./pages/paginacrear/paginacrear.module').then( m => m.PaginacrearPageModule)
+    loadChildren: () => import('./pages/paginacrear/paginacrear.module').then(m => m.PaginacrearPageModule)
   },
   {
     path: 'politcontenido',
-    loadChildren: () => import('./pages/politcontenido/politcontenido.module').then( m => m.PolitcontenidoPageModule)
+    loadChildren: () => import('./pages/politcontenido/politcontenido.module').then(m => m.PolitcontenidoPageModule)
   },
   {
     path: 'politprivacidad',
-    loadChildren: () => import('./pages/politprivacidad/politprivacidad.module').then( m => m.PolitprivacidadPageModule)
+    loadChildren: () => import('./pages/politprivacidad/politprivacidad.module').then(m => m.PolitprivacidadPageModule)
   },
   {
     path: 'acuerdousuario',
-    loadChildren: () => import('./pages/acuerdousuario/acuerdousuario.module').then( m => m.AcuerdousuarioPageModule)
+    loadChildren: () => import('./pages/acuerdousuario/acuerdousuario.module').then(m => m.AcuerdousuarioPageModule)
   },
   {
     path: 'agradecimientos',
-    loadChildren: () => import('./pages/agradecimientos/agradecimientos.module').then( m => m.AgradecimientosPageModule)
+    loadChildren: () => import('./pages/agradecimientos/agradecimientos.module').then(m => m.AgradecimientosPageModule)
   },
   {
     path: 'centroayuda',
-    loadChildren: () => import('./pages/centroayuda/centroayuda.module').then( m => m.CentroayudaPageModule)
+    loadChildren: () => import('./pages/centroayuda/centroayuda.module').then(m => m.CentroayudaPageModule)
   },
   {
     path: 'reportproblema',
-    loadChildren: () => import('./pages/reportproblema/reportproblema.module').then( m => m.ReportproblemaPageModule)
+    loadChildren: () => import('./pages/reportproblema/reportproblema.module').then(m => m.ReportproblemaPageModule)
   },
   {
     path: 'registro',
-    loadChildren: () => import('./pages/registro/registro.module').then( m => m.RegistroPageModule)
-  },
-  {
-    path: 'login',
-    loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
+    loadChildren: () => import('./pages/registro/registro.module').then(m => m.RegistroPageModule)
   },
   {
     path: 'adminpage',
-    loadChildren: () => import('./pages/adminpage/adminpage.module').then( m => m.AdminpagePageModule)
+    loadChildren: () => import('./pages/adminpage/adminpage.module').then(m => m.AdminpagePageModule)
   },
   {
     path: 'recuperacion',
-    loadChildren: () => import('./pages/recuperacion/recuperacion.module').then( m => m.RecuperacionPageModule)
-  },  {
+    loadChildren: () => import('./pages/recuperacion/recuperacion.module').then(m => m.RecuperacionPageModule)
+  },
+  {
     path: 'cambiopassword',
-    loadChildren: () => import('./pages/cambiopassword/cambiopassword.module').then( m => m.CambiopasswordPageModule)
+    loadChildren: () => import('./pages/cambiopassword/cambiopassword.module').then(m => m.CambiopasswordPageModule)
+  },
+  {
+    path: 'exito',
+    loadChildren: () => import('./pages/exito/exito.module').then(m => m.ExitoPageModule)
+  },
+  {
+    path: 'not-found',
+    loadChildren: () => import('./pages/not-found/not-found.module').then(m => m.NotFoundPageModule)
+  },
+  {
+    path: '**',
+    redirectTo: 'not-found'  // Redirige a la página 404
   }
-
-
 ];
+
 @NgModule({
   imports: [
     RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })

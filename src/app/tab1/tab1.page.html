@@ -5,7 +5,11 @@
     <!-- ICONO DE PERFIL -->
     <ion-buttons slot="end"> {{ userName }}
       <ion-button (click)="irPerfil()">
-        <ion-icon slot="icon-only" name="person-circle-outline"></ion-icon>
+        <ion-buttons slot="end">
+          <ion-button>
+            <img src="https://media.pauta.cl/2023/08/Perro-del-Meme.jpg" class="profile-image" alt="Foto de perfil">
+          </ion-button>
+        </ion-buttons>
       </ion-button>
     </ion-buttons>
     <!-- FIN ICONO DE PERFIL -->
@@ -14,18 +18,17 @@
 
 <ion-content>
   <!-- PUBLICACIONES -->
+  <!-- PUBLI 1 -->
   <mat-card class="example-card" appearance="outlined">
     <mat-card-header>
       <div mat-card-avatar class="example-header-image"></div>
-      <mat-card-title>Titulo</mat-card-title>
-      <mat-card-subtitle>Usuario</mat-card-subtitle>
+      <mat-card-title>Rosa</mat-card-title>
+      <mat-card-subtitle>Jardinero1</mat-card-subtitle>
     </mat-card-header>
-    <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+    <img mat-card-image src="https://fincasderosas.com/wp-content/uploads/2021/01/rosa-cherry-love1.jpg" alt="Photo of a Rosa">
     <mat-card-content>
       <p class="contenido-publicacion">
-        The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
-        A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
-        bred for hunting.
+        La rosa es una de las flores más conocidas y apreciadas en todo el mundo. Existen más de 100 especies diferentes de rosas, que varían en tamaño, color y fragancia. Las rosas se utilizan comúnmente en jardines, para decoración y en la producción de perfumes.
       </p>
     </mat-card-content>
     <mat-card-actions>
@@ -33,19 +36,17 @@
       <button mat-button><mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="chat" class="icon-comentarios"></mat-icon></button>
     </mat-card-actions>
   </mat-card>
-  <!-- PUBLICACION 2 -->
+  <!-- PUBLI 2 -->
   <mat-card class="example-card" appearance="outlined">
     <mat-card-header>
-      <div mat-card-avatar class="example-header-image"></div>
-      <mat-card-title>Titulo</mat-card-title>
-      <mat-card-subtitle>Usuario</mat-card-subtitle>
+      <div mat-card-avatar class="example-header-imagen-2"></div>
+      <mat-card-title>Orquídea</mat-card-title>
+      <mat-card-subtitle>FloraFan</mat-card-subtitle>
     </mat-card-header>
-    <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+    <img mat-card-image src="https://www.massogarden.com/images/plantas/Orqu%C3%ADdea.jpg" alt="Photo of an Orquídea">
     <mat-card-content>
       <p class="contenido-publicacion">
-        The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
-        A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
-        bred for hunting.
+        Las orquídeas son una familia diversa de plantas con flores, conocida por sus flores exóticas y fragantes. Hay alrededor de 25,000 especies de orquídeas, que se encuentran en casi todos los hábitats del mundo. Son muy populares en la horticultura y la colección de orquídeas es un pasatiempo en muchas culturas.
       </p>
     </mat-card-content>
     <mat-card-actions>
@@ -53,19 +54,17 @@
       <button mat-button><mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="chat" class="icon-comentarios"></mat-icon></button>
     </mat-card-actions>
   </mat-card>
-  <!-- PUBLICACION 3 -->
+  <!-- PUBLI 3 -->
   <mat-card class="example-card" appearance="outlined">
     <mat-card-header>
-      <div mat-card-avatar class="example-header-image"></div>
-      <mat-card-title>Titulo</mat-card-title>
-      <mat-card-subtitle>Usuario</mat-card-subtitle>
+      <div mat-card-avatar class="example-header-imagen-3"></div>
+      <mat-card-title>Girasol</mat-card-title>
+      <mat-card-subtitle>SolAmante</mat-card-subtitle>
     </mat-card-header>
-    <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+    <img mat-card-image src="https://www.kukyflor.com/blog/wp-content/uploads/2018/01/girasol.jpg" alt="Photo of a Girasol">
     <mat-card-content>
       <p class="contenido-publicacion">
-        The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
-        A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
-        bred for hunting.
+        El girasol es una planta anual conocida por sus grandes y vistosas flores amarillas. Originario de América del Norte, el girasol es cultivado por sus semillas, que son una fuente importante de aceite comestible y alimento para aves. Su nombre científico es Helianthus annuus.
       </p>
     </mat-card-content>
     <mat-card-actions>
@@ -73,4 +72,40 @@
       <button mat-button><mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="chat" class="icon-comentarios"></mat-icon></button>
     </mat-card-actions>
   </mat-card>
+  <!-- PUBLI 4 -->
+  <mat-card class="example-card" appearance="outlined">
+    <mat-card-header>
+      <div mat-card-avatar class="example-header-imagen-4"></div>
+      <mat-card-title>Tulipán</mat-card-title>
+      <mat-card-subtitle>FlowerLover</mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCp89A5EFGnSGmEETWH4qbo1pVWDlWCVtoIQ&s" alt="Photo of a Tulipán">
+    <mat-card-content>
+      <p class="contenido-publicacion">
+        Los tulipanes son plantas bulbosas pertenecientes a la familia Liliaceae. Son nativos de Eurasia y el norte de África, pero son especialmente famosos en los Países Bajos, donde se cultivan ampliamente. Los tulipanes son conocidos por sus flores vibrantes y su gran variedad de colores.
+      </p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button><mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="favorite" class="icon-like"></mat-icon></button>
+      <button mat-button><mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="chat" class="icon-comentarios"></mat-icon></button>
+    </mat-card-actions>
+  </mat-card>
+  <!-- PUBLI 5 -->
+  <mat-card class="example-card" appearance="outlined">
+    <mat-card-header>
+      <div mat-card-avatar class="example-header-imagen-5"></div>
+      <mat-card-title>Lavanda</mat-card-title>
+      <mat-card-subtitle>AromasNature</mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image src="https://http2.mlstatic.com/D_NQ_NP_976249-MLC52702364183_122022-O.webp" alt="Photo of a Lavanda">
+    <mat-card-content>
+      <p class="contenido-publicacion">
+        La lavanda es una planta perenne conocida por sus flores fragantes y de color púrpura. Es nativa de la región del Mediterráneo, pero se cultiva en muchas partes del mundo por su aceite esencial, que se utiliza en la aromaterapia y en productos de cuidado personal. La lavanda también es apreciada por sus propiedades medicinales.
+      </p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button><mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="favorite" class="icon-like"></mat-icon></button>
+      <button mat-button><mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="chat" class="icon-comentarios"></mat-icon></button>
+    </mat-card-actions>
+  </mat-card>  
 </ion-content>

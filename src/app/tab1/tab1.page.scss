@@ -8,10 +8,37 @@
   }
   
   .example-header-image {
-    background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+    background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1RymdvmGWio0J8X6Mo7WaTVcgf_bWZA5T3A&s');
     background-size: cover;
   }
 
 .contenido-publicacion{
     margin-top: 0.5rem;
+}
+
+.example-header-imagen-2 {
+  background-image: url('https://i.scdn.co/image/ab67616d0000b273ac7bbd44360e147f4bb81bf2');
+  background-size: cover;
+}
+
+.example-header-imagen-3 {
+  background-image: url('https://media.tenor.com/ldNjzyrqeIMAAAAe/gato-meme.png');
+  background-size: cover;
+}
+
+.example-header-imagen-4 {
+  background-image: url('https://www.infobae.com/new-resizer/AvsAVBZTGz-BsUzGxrkwkxVg56A=/992x1323/filters:format(webp):quality(85)/cloudfront-us-east-1.images.arcpublishing.com/infobae/FW4B4QXW2RFEFNTIKMX4MLSMIE.jpg');
+  background-size: cover;
+}
+
+.example-header-imagen-5 {
+  background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnXxeTEXlNaKr9QXMC3O5r-IqTg9zhUVfi0g&s');
+  background-size: cover;
+}
+
+.profile-image {
+  width: 40px; 
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
 }

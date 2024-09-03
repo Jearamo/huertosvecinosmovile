@@ -1,0 +1,22 @@
+ion-content {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  
+  h1 {
+    font-size: 5rem;
+    color: var(--ion-color-primary);
+  }
+  
+  p {
+    font-size: 1.25rem;
+    margin: 1rem 0;
+  }
+  
+  ion-button {
+    margin-top: 1rem;
+  }
+  

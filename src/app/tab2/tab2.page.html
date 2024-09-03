@@ -7,16 +7,16 @@
 </ion-header>
 
 <ion-content>
+
   <section>
-    <div class="example-button-row">
-      <button mat-stroked-button>Publicar</button>
-    </div>
+    <button mat-stroked-button class="align-right" [routerLink]="['/exito']">Publicar</button>
   </section>
+
   <ion-item>
-    <ion-input label="título" labelPlacement="floating" placeholder="Ingrese el título" type="text required"></ion-input>
+    <ion-input label="título" labelPlacement="floating" placeholder="Ingrese el título" type="text" required></ion-input>
   </ion-item>
   <ion-item>
-    <ion-input label="contenido" labelPlacement="floating" placeholder="cuerpo de texto" type="text required" style="height: 20rem;"></ion-input>
-  </ion-item>
-  <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="upload"></mat-icon>
+    <ion-textarea label="contenido" labelPlacement="floating" placeholder="Cuerpo de texto" auto-grow="true" required></ion-textarea>
+  </ion-item>  
+  <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="upload" class="subir-archivo"></mat-icon>
 </ion-content>

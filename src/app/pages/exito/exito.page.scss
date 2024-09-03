@@ -1,0 +1,30 @@
+.success-message {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  
+  .success-icon {
+    font-size: 5rem;
+    color: var(--ion-color-success);
+  }
+  
+  h1 {
+    font-size: 2rem;
+    color: var(--ion-color-dark);
+    margin: 1rem 0;
+  }
+  
+  p {
+    font-size: 1.25rem;
+    color: var(--ion-color-medium);
+    margin-bottom: 2rem;
+  }
+  
+  ion-button {
+    margin-top: 1rem;
+  }
+  
