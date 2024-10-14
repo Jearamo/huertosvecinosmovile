@@ -81,5 +81,9 @@ export class LoginPage implements OnInit {
     }
   }
 
+  async pruebas() {
+    await this.router.navigate(['/testeos']);
+  }
+
   ngOnInit() {}
 }

@@ -1,0 +1,21 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>testeos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-list>
+    <ion-item *ngFor="let pub of publicaciones">
+      <ion-label>
+        <h2>{{ pub.titulo }}</h2>
+        <p>{{ pub.content }}</p>
+      </ion-label>
+      <ion-button (click)="editPublicacion(pub.postid, 'Nuevo Título', 'Nuevo Contenido')">Editar</ion-button>
+      <ion-button (click)="deletePublicacion(pub.postid)">Eliminar</ion-button>
+    </ion-item>
+  </ion-list>
+  
+  <ion-button (click)="addPublicacion('Título de ejemplo', 'Contenido de ejemplo')">Agregar Publicación</ion-button>
+  
+</ion-content>

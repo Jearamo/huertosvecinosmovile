@@ -68,13 +68,17 @@ const routes: Routes = [
     loadChildren: () => import('./pages/exito/exito.module').then(m => m.ExitoPageModule)
   },
   {
+    path: 'testeos',
+    loadChildren: () => import('./pages/testeos/testeos.module').then( m => m.TesteosPageModule)
+  },
+  {
     path: 'not-found',
     loadChildren: () => import('./pages/not-found/not-found.module').then(m => m.NotFoundPageModule)
   },
   {
     path: '**',
     redirectTo: 'not-found'  // Redirige a la página 404
-  }
+  },
 ];
 
 @NgModule({
