@@ -1,0 +1,24 @@
+.comments-modal {
+  --height: 50%;
+  --border-radius: 16px 16px 0 0;
+  align-items: flex-end;
+}
+
+.comments-modal::part(content) {
+  position: absolute;
+  bottom: 0;
+}
+
+.modal-wrapper {
+  position: absolute;
+  bottom: 0;
+}
+
+@keyframes slide-up {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.comments-modal .modal-wrapper {
+  animation: slide-up 0.3s ease-out;
+}

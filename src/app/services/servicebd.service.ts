@@ -3,6 +3,7 @@ import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 import { AlertController, Platform } from '@ionic/angular';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Publicaciones } from './publicaciones';
+import { Comentario } from './publicaciones';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,16 @@ export class ServicebdService {
 
   //variables de creación de Tablas
   tablaPublicaciones: string = "CREATE TABLE IF NOT EXISTS publicaciones(postid INTEGER PRIMARY KEY AUTOINCREMENT, titulo VARCHAR(100) NOT NULL, content TEXT NOT NULL);";
+
+  tablaComentarios: string = `CREATE TABLE IF NOT EXISTS comentarios (
+  comentarioId INTEGER PRIMARY KEY AUTOINCREMENT,
+  postId INTEGER NOT NULL,
+  userId VARCHAR(100) NOT NULL,
+  texto TEXT NOT NULL,
+  createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (postId) REFERENCES publicaciones(postId) ON DELETE CASCADE
+);`;
+
 
   //variables para los insert por defecto en nuestras tablas
   registroPublicaciones: string = "INSERT or IGNORE INTO publicaciones(postid, titulo, content) VALUES (1,'Soy un titulo', 'Soy el texto de esta publicación que se esta insertando de manera autmática')";
@@ -66,10 +77,11 @@ createBD() {
 // Mueve la función crearTablas aquí fuera
 async crearTablas() {
   try {
-    await this.database.executeSql(this.tablaPublicaciones, []);  // Creación de la tabla
-    await this.database.executeSql(this.registroPublicaciones, []);  // Inserción por defecto
-    this.seleccionarPublicaciones();  // Selecciona las publicaciones y actualiza el listado
-    this.isDBReady.next(true);  // Marca la base de datos como lista
+    await this.database.executeSql(this.tablaPublicaciones, []);
+    await this.database.executeSql(this.registroPublicaciones, []);
+    await this.database.executeSql(this.tablaComentarios, []); // Crear tabla de comentarios
+    this.seleccionarPublicaciones();
+    this.isDBReady.next(true);
   } catch (e) {
     this.presentAlert('Error', 'Error en crear las tablas: ' + JSON.stringify(e));
     console.error('Error en crear tablas: ', e);
@@ -136,6 +148,45 @@ async crearTablas() {
     })
     
   }
+  insertarComentario(postid: number, userId: string, texto: string) {
+    return this.database.executeSql('INSERT INTO comentarios(postid, userId, texto) VALUES (?, ?, ?)', [postid, userId, texto]).then(res => {
+      this.presentAlert("Insertar", "Comentario Registrado");
+    }).catch(e => {
+      this.presentAlert('Insertar', 'Error: ' + JSON.stringify(e));
+    });
+  }
+
+  getComentarios(postId: number): Promise<Comentario[]> {
+    return this.database.executeSql('SELECT * FROM comentarios WHERE postid = ?', [postId]).then(res => {
+      let items: Comentario[] = [];
+      if (res.rows.length > 0) {
+        for (let i = 0; i < res.rows.length; i++) {
+          items.push({
+            comentarioId: res.rows.item(i).comentarioid, // Asegúrate de que los nombres de la BD coincidan
+            postId: res.rows.item(i).postid,
+            userId: res.rows.item(i).userId,
+            texto: res.rows.item(i).texto,
+            createdAt: res.rows.item(i).createdAt,
+          });
+        }
+      }
+      return items;
+    }).catch(e => {
+      this.presentAlert('Error', 'Error al obtener comentarios: ' + JSON.stringify(e));
+      return [];
+    });
+  }
+  
+
+  eliminarComentario(comentarioid: string) {
+    return this.database.executeSql('DELETE FROM comentarios WHERE comentarioid = ?', [comentarioid]).then(res => {
+      this.presentAlert("Eliminar", "Comentario Eliminado");
+    }).catch(e => {
+      this.presentAlert('Eliminar', 'Error: ' + JSON.stringify(e));
+    });
+  }
+  
+  
 
 
 }
