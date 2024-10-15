@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { MessageService } from './../../services/message.service';
 
 @Component({
   selector: 'app-registro',
@@ -20,48 +21,77 @@ export class RegistroPage {
   showPassword: boolean = false;
   aceptoTerminos: boolean = false;
 
-  constructor(private router: Router, private alertController: AlertController) { }
+  constructor(private router: Router,private alertController: AlertController,private messageService: MessageService) { }
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
   }
 
   async registrar() {
-    const camposVacios = Object.values(this.nuevoUsuario).some(value => !value.trim());
-    
-    if (camposVacios || !this.confirmarContrasena.trim()) {
-      await this.mostrarAlerta('Campos vacíos', 'Por favor, rellena todos los campos');
+    this.messageService.clearMessages();
+    let errores: string[] = [];
+
+    // Verificar si todos los campos están vacíos
+    const todosVacios = Object.values(this.nuevoUsuario).every(value => !value.trim()) 
+                        && !this.confirmarContrasena.trim();
+
+    if (todosVacios) {
+      this.messageService.addMessage({ type: 'error', text: 'Por favor, rellena todos los campos' });
       return;
+    }
+
+    // Si al menos un campo está lleno, procedemos con las validaciones específicas
+    Object.entries(this.nuevoUsuario).forEach(([key, value]) => {
+      if (!value.trim()) {
+        errores.push(`El campo ${this.getCampoNombre(key)} es obligatorio`);
+      }
+    });
+
+    if (!this.confirmarContrasena.trim()) {
+      errores.push('Debes confirmar la contraseña');
     }
 
     if (this.nuevoUsuario.contrasena !== this.confirmarContrasena) {
-      await this.mostrarAlerta('Error', 'Las contraseñas no coinciden.');
-      return;
+      errores.push('Las contraseñas no coinciden');
     }
 
     if (!this.validarCorreo(this.nuevoUsuario.correo)) {
-      await this.mostrarAlerta('Error', 'Por favor, ingrese un correo electrónico válido.');
-      return;
+      errores.push('El correo electrónico no es válido');
     }
 
     if (this.nuevoUsuario.contrasena.length < 8) {
-      await this.mostrarAlerta('Error', 'La contraseña debe tener al menos 8 caracteres.');
-      return;
+      errores.push('La contraseña debe tener al menos 8 caracteres');
     }
 
     if (!this.tieneEdadSuficiente(this.nuevoUsuario.fechaNacimiento)) {
-      await this.mostrarAlerta('Error', 'Debes tener al menos 16 años para registrarte.');
-      return;
+      errores.push('Debes tener al menos 16 años para registrarte');
     }
 
     if (!this.aceptoTerminos) {
-      await this.mostrarAlerta('Aceptar términos', 'Debes aceptar los términos para continuar.');
-      return;
+      errores.push('Debes aceptar los términos y condiciones');
     }
 
-    await this.mostrarAlerta('Éxito', 'Usuario registrado correctamente.');
+    // Mostrar errores o proceder con el registro
+    if (errores.length > 0) {
+      errores.forEach(error => this.messageService.addMessage({ type: 'error', text: error }));
+    } else {
+      this.messageService.addMessage({ type: 'success', text: 'Usuario registrado correctamente' });
+      setTimeout(() => {
+        this.router.navigate(['/login']);
+      }, 2000);
+    }
+  }
 
-    this.router.navigate(['/login']);
+  getCampoNombre(key: string): string {
+    const nombres: { [key: string]: string } = {
+      nombreUsuario: 'Nombre de Usuario',
+      nombre: 'Nombre',
+      apellido: 'Apellido',
+      fechaNacimiento: 'Fecha de Nacimiento',
+      correo: 'Correo',
+      contrasena: 'Contraseña'
+    };
+    return nombres[key] || key;
   }
 
   validarCorreo(correo: string): boolean {

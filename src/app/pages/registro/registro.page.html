@@ -36,11 +36,13 @@
           <ion-icon [name]="showPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
         </ion-button>
       </ion-item>
-      <div style="display: flex; justify-content: space-between;">
-        <p>Acepto <a [routerLink]="['/politprivacidad']">terminos y condiciones</a></p><ion-checkbox [(ngModel)]="aceptoTerminos" name="aceptoTerminos"></ion-checkbox>
+      <div class="terms-container">
+        <ion-label>Acepto <a [routerLink]="['/politprivacidad']">términos y condiciones</a></ion-label>
+        <ion-checkbox [(ngModel)]="aceptoTerminos" name="aceptoTerminos"></ion-checkbox>
       </div>
+      <app-messages></app-messages>
       <ion-button expand="block" class="ion-margin-top" type="submit">Registrar</ion-button>
     </form>
-    <p class="login">Ya tienes cuenta? <a href="login">Inicia sesión</a></p>
+    <p class="login">Ya tienes cuenta? <a [routerLink]="['/login']">Inicia sesión</a></p>
   </div>
 </ion-content>

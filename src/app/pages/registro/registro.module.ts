@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { RegistroPageRoutingModule } from './registro-routing.module';
 
 import { RegistroPage } from './registro.page';
+import { MessagesComponent } from 'src/app/components/message/message.component';
 
 @NgModule({
   imports: [
@@ -15,6 +16,6 @@ import { RegistroPage } from './registro.page';
     IonicModule,
     RegistroPageRoutingModule
   ],
-  declarations: [RegistroPage]
+  declarations: [RegistroPage, MessagesComponent]
 })
 export class RegistroPageModule {}
