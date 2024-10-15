@@ -7,15 +7,16 @@ import { IonicModule } from '@ionic/angular';
 import { RegistroPageRoutingModule } from './registro-routing.module';
 
 import { RegistroPage } from './registro.page';
-import { MessagesComponent } from 'src/app/components/message/message.component';
+import { SharedModule } from '../../components/shared/shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    RegistroPageRoutingModule
+    RegistroPageRoutingModule,
+    SharedModule 
   ],
-  declarations: [RegistroPage, MessagesComponent]
+  declarations: [RegistroPage]
 })
 export class RegistroPageModule {}
