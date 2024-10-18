@@ -46,13 +46,22 @@ export class AuthService {
       if (nickExists) {
         throw new AuthError('El nombre de usuario ya está en uso');
       }
+
+      // Convertir fecha_nacimiento a formato ISO
+      const fechaNacimiento = new Date(userData.fecha_nacimiento);
+      if (isNaN(fechaNacimiento.getTime())) {
+        throw new AuthError('La fecha de nacimiento es inválida');
+      }
+
+      // Formato ISO para fecha_nacimiento
+      const fechaNacimientoISO = fechaNacimiento.toISOString().split('T')[0]; // Solo la parte de la fecha (YYYY-MM-DD)
   
       // Si las validaciones pasan, procedemos con el registro
       await this.dbService.insertarUsuario(
         userData.nick_name,
         userData.nombre,
         userData.apellido,
-        userData.fecha_nacimiento,
+        fechaNacimientoISO, // Usamos la fecha en formato ISO
         userData.email,
         userData.password,
         userData.avatar || '',
@@ -71,7 +80,7 @@ export class AuthService {
         throw new AuthError(errorMessage);
       }
     }
-  }
+}
 
   // Método helper para mostrar alertas
   private async presentAlert(header: string, message: string): Promise<void> {
@@ -92,6 +101,10 @@ export class AuthService {
     return this.currentUser.asObservable();
   }
 
+  async updateCurrentUser(userData: any): Promise<void> {
+    this.currentUser.next(userData);
+  }
+
   async login(email: string, password: string): Promise<boolean> {
     try {
       const usuarios = await this.dbService.obtenerUsuarios();
@@ -100,7 +113,7 @@ export class AuthService {
       if (!user) {
         throw new AuthError('Correo o contraseña incorrectos');
       }
-
+  
       // Almacenar el usuario en el BehaviorSubject
       this.currentUser.next(user);
       this.isAuthenticated.next(true);
@@ -112,6 +125,7 @@ export class AuthService {
       throw new AuthError(errMessage);
     }
   }
+  
 
   // Método para cerrar sesión
   logout(): void {

@@ -123,7 +123,7 @@ export class RegistroPage {
       // Redirigir al login después de 2 segundos
       setTimeout(() => {
         this.router.navigate(['/login']);
-      }, 1000);
+      }, 500);
     } catch (error) {
       let errorMessage = 'Error al registrar usuario';
       

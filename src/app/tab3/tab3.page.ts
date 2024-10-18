@@ -55,7 +55,5 @@ export class Tab3Page implements OnInit {
   }
 
   logout() {
-    this.router.navigate(['/login']).then(() => {
-      window.location.reload();
-    });
+    this.router.navigate(['/login'])
 }}

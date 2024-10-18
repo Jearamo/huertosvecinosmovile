@@ -37,13 +37,6 @@
     <ion-input [(ngModel)]="apellido" [readonly]="!editMode"></ion-input>
   </ion-item>
 
-  <ion-item>
-    <ion-label position="stacked">Fecha de nacimiento</ion-label>
-    <ion-datetime 
-      [(ngModel)]="fechaNacimiento" [readonly]="!editMode" displayFormat="DD/MM/YYYY"pickerFormat="DD/MM/YYYY">
-    </ion-datetime>
-  </ion-item>
-  
   <ion-button expand="block" (click)="guardarCambios()" *ngIf="editMode">Guardar cambios</ion-button>
   
   <div *ngIf="userEmail !== 'admin@gmail.com'">
