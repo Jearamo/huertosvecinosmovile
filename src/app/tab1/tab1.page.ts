@@ -37,7 +37,6 @@ export class Tab1Page implements OnInit {
         nombre: this.nombre,
         apellido: this.apellido,
         fechaNacimiento: this.fechaNacimiento.toISOString(),
-        password: this.password,
       },
     };
     this.router.navigate(['/tabs/tab3'], navigationExtras);

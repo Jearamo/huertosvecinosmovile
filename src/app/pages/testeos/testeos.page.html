@@ -12,9 +12,6 @@
     <ion-segment-button value="usuarios">
       <ion-label>Usuarios</ion-label>
     </ion-segment-button>
-    <ion-segment-button value="temas">
-      <ion-label>Temas</ion-label>
-    </ion-segment-button>
     <ion-segment-button value="reportes">
       <ion-label>Reportes</ion-label>
     </ion-segment-button>
@@ -27,7 +24,6 @@
         <ion-label>
           <h2>{{ pub.title }}</h2>
           <p>{{ pub.content }}</p>
-          <p>Por: {{ pub.nick_name }} | Tema: {{ pub.tema_nombre }}</p>
         </ion-label>
         <ion-button (click)="editPublicacion(pub)">Editar</ion-button>
         <ion-button (click)="deletePublicacion(pub.post_id)">Eliminar</ion-button>
@@ -48,18 +44,6 @@
       </ion-item>
     </ion-list>
     <ion-button expand="block" (click)="addUsuario()">Agregar Usuario</ion-button>
-  </div>
-
-  <!-- Temas -->
-  <div *ngIf="currentSegment === 'temas'">
-    <ion-list>
-      <ion-item *ngFor="let tema of temas">
-        <ion-label>
-          <h2>{{ tema.nombre }}</h2>
-        </ion-label>
-      </ion-item>
-    </ion-list>
-    <ion-button expand="block" (click)="addTema()">Agregar Tema</ion-button>
   </div>
 
   <!-- Reportes -->

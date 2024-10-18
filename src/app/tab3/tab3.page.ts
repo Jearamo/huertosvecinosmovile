@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 
 @Component({
   selector: 'app-tab3',
@@ -28,18 +28,18 @@ export class Tab3Page implements OnInit {
       this.password = state.password || '';
     }
   }
-
+  
   goToPerfil() {
-    this.router.navigate(['/paginaperfil'], {
+    const navigationExtras: NavigationExtras = {
       state: {
         userName: this.userName,
         userEmail: this.userEmail,
         nombre: this.nombre,
         apellido: this.apellido,
         fechaNacimiento: this.fechaNacimiento.toISOString(),
-        password: this.password
-      }
-    });
+      },
+    };
+    this.router.navigate(['/paginaperfil'], navigationExtras);
   }
 
   goadmin() {

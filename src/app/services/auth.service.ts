@@ -29,7 +29,6 @@ export class AuthService {
     fecha_nacimiento: string,
     email: string,
     password: string,
-    bio?: string,
     avatar?: string
   }): Promise<boolean> {
     try {
@@ -56,7 +55,6 @@ export class AuthService {
         userData.fecha_nacimiento,
         userData.email,
         userData.password,
-        userData.bio || '',
         userData.avatar || '',
         2  // Role ID por defecto (usuario normal)
       );
@@ -102,15 +100,22 @@ export class AuthService {
       if (!user) {
         throw new AuthError('Correo o contraseña incorrectos');
       }
-  
+
+      // Almacenar el usuario en el BehaviorSubject
       this.currentUser.next(user);
       this.isAuthenticated.next(true);
       
       return true;
     } catch (error) {
-      const errMessage = (error as AuthError).message || 'Error desconocido';  // Aquí especificas el tipo
+      const errMessage = (error instanceof AuthError) ? error.message : 'Error desconocido';
       await this.presentAlert('Error', errMessage);
-      throw error;
+      throw new AuthError(errMessage);
     }
-  }  
+  }
+
+  // Método para cerrar sesión
+  logout(): void {
+    this.currentUser.next(null);
+    this.isAuthenticated.next(false);
+  }
 }

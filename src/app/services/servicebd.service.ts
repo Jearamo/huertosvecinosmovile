@@ -4,8 +4,7 @@ import { AlertController, Platform } from '@ionic/angular';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Publicaciones } from './publicaciones';
 import { Comentario } from './publicaciones';
-import { Usuario } from './publicaciones';
-import { Tema } from './publicaciones';
+import { usuarios } from './publicaciones';
 import { Reporte } from './publicaciones';
 
 @Injectable({
@@ -31,17 +30,12 @@ export class ServicebdService {
       fecha_nacimiento TEXT NOT NULL,
       email TEXT NOT NULL UNIQUE,
       password TEXT NOT NULL,
-      bio TEXT,
       avatar TEXT,
       rol_rol_id INTEGER DEFAULT 2,
       FOREIGN KEY (rol_rol_id) REFERENCES rol(rol_id)
     );
   `;
 
-  tablaTema: string = `CREATE TABLE IF NOT EXISTS tema (
-    id_tema INTEGER PRIMARY KEY AUTOINCREMENT,
-    nombre VARCHAR(40) NOT NULL
-  );`;
 
   tablaPublicaciones: string = `CREATE TABLE IF NOT EXISTS publicaciones (
     post_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -50,9 +44,7 @@ export class ServicebdService {
     created_dt DATE DEFAULT CURRENT_TIMESTAMP,
     picture VARCHAR(50),
     Usuario_user_id INTEGER,
-    tema_id_tema INTEGER,
-    FOREIGN KEY (Usuario_user_id) REFERENCES Usuario(user_id),
-    FOREIGN KEY (tema_id_tema) REFERENCES tema(id_tema)
+    FOREIGN KEY (Usuario_user_id) REFERENCES usuarios(user_id)
   );`;
 
   tablaComentarios: string = `CREATE TABLE IF NOT EXISTS comentarios (
@@ -61,7 +53,7 @@ export class ServicebdService {
     created_date DATE DEFAULT CURRENT_TIMESTAMP,
     Usuario_user_id INTEGER,
     Publicaciones_post_id INTEGER,
-    FOREIGN KEY (Usuario_user_id) REFERENCES Usuario(user_id),
+    FOREIGN KEY (Usuario_user_id) REFERENCES usuarios(user_id),
     FOREIGN KEY (Publicaciones_post_id) REFERENCES Publicaciones(post_id)
   );`;
 
@@ -73,7 +65,7 @@ export class ServicebdService {
     status VARCHAR(15) NOT NULL,
     tipo VARCHAR(30) NOT NULL,
     conclusion_reporte VARCHAR(150),
-    FOREIGN KEY (Usuario_user_id) REFERENCES Usuario(user_id)
+    FOREIGN KEY (Usuario_user_id) REFERENCES usuarios(user_id)
   );`;
 
   // Variables para los inserts por defecto
@@ -81,8 +73,7 @@ export class ServicebdService {
 
   // Variables para guardar los datos de las consultas
   listadopublicaciones = new BehaviorSubject<Publicaciones[]>([]);
-  listadoUsuarios = new BehaviorSubject<Usuario[]>([]);
-  listadoTemas = new BehaviorSubject<Tema[]>([]);
+  listadoUsuarios = new BehaviorSubject<usuarios[]>([]);
   listadoReportes = new BehaviorSubject<Reporte[]>([]);
 
   // Variable para el status de la Base de datos
@@ -107,12 +98,8 @@ export class ServicebdService {
     return this.listadopublicaciones.asObservable();
   }
 
-  fetchUsuarios(): Observable<Usuario[]> {
+  fetchUsuarios(): Observable<usuarios[]> {
     return this.listadoUsuarios.asObservable();
-  }
-
-  fetchTemas(): Observable<Tema[]> {
-    return this.listadoTemas.asObservable();
   }
 
   fetchReportes(): Observable<Reporte[]> {
@@ -161,23 +148,86 @@ export class ServicebdService {
   async crearTablas() {
     try {
       await this.database.executeSql(this.tablaRol, []);
-      await this.database.executeSql('DROP TABLE IF EXISTS Usuarios', []);
+      await this.database.executeSql('DROP TABLE IF EXISTS usuarios', []);
       await this.database.executeSql(this.tablaUsuarios, []);
-      await this.database.executeSql(this.tablaTema, []);
       await this.database.executeSql(this.tablaPublicaciones, []);
       await this.database.executeSql(this.tablaComentarios, []);
       await this.database.executeSql(this.tablaReporte, []);
       await this.database.executeSql(this.registroPublicaciones, []);
       await this.insertDefaultRoles();
+      await this.insertDefaultAdmin();
       this.seleccionarPublicaciones();
       this.seleccionarUsuarios();
-      this.seleccionarTemas();
       this.seleccionarReportes();
       this.isDBReady.next(true);
     } catch (e) {
       this.presentAlert('Error', 'Error en crear las tablas: ' + JSON.stringify(e));
       console.error('Error en crear tablas: ', e);
     }
+  }
+
+  private async insertDefaultAdmin() {
+    try {
+      const adminUser = {
+        nick_name: 'admin',
+        nombre: 'Administrador',
+        apellido: 'Sistema',
+        fecha_nacimiento: '2000-01-01',
+        email: 'admin@gmail.com',
+        password: 'admin1234',
+        avatar: '',
+        rol_rol_id: 1
+      };
+
+      // Verificar si el admin ya existe
+      const query = `
+        SELECT * FROM usuarios 
+        WHERE email = ? OR nick_name = ?
+      `;
+      const result = await this.database.executeSql(query, [adminUser.email, adminUser.nick_name]);
+
+      if (result.rows.length === 0) {
+        // Si no existe, insertar el admin
+        const insertQuery = `
+          INSERT INTO usuarios (
+            nick_name, nombre, apellido, fecha_nacimiento, 
+            email, password, avatar, rol_rol_id
+          ) 
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        `;
+        
+        await this.database.executeSql(insertQuery, [
+          adminUser.nick_name,
+          adminUser.nombre,
+          adminUser.apellido,
+          adminUser.fecha_nacimiento,
+          adminUser.email,
+          adminUser.password,
+          adminUser.avatar,
+          adminUser.rol_rol_id
+        ]);
+
+        console.log('Admin user created successfully');
+      } else {
+        console.log('Admin user already exists');
+      }
+    } catch (error) {
+      console.error('Error inserting admin user:', error);
+      throw error;
+    }
+  }
+
+  async checkEmailExists(email: string): Promise<boolean> {
+    const query = 'SELECT COUNT(*) as count FROM usuarios WHERE email = ?';
+    const result = await this.database.executeSql(query, [email]);
+    return result.rows.item(0).count > 0;
+  }
+
+  // Método para verificar si existe un nickname
+  async checkNicknameExists(nickname: string): Promise<boolean> {
+    const query = 'SELECT COUNT(*) as count FROM usuarios WHERE nick_name = ?';
+    const result = await this.database.executeSql(query, [nickname]);
+    return result.rows.item(0).count > 0;
   }
 
   // Métodos para Publicaciones
@@ -193,7 +243,6 @@ export class ServicebdService {
             created_dt: res.rows.item(i).created_dt,
             picture: res.rows.item(i).picture,
             Usuario_user_id: res.rows.item(i).Usuario_user_id,
-            tema_id_tema: res.rows.item(i).tema_id_tema
           });
         }
       }
@@ -207,8 +256,8 @@ export class ServicebdService {
     return result.rows.item(0).count > 0; // Esto debería devolver true si hay un usuario con ese correo
   }
 
-  insertarPublicacion(title: string, content: string, picture: string, Usuario_user_id: number, tema_id_tema: number) {
-    return this.database.executeSql('INSERT INTO Publicaciones(title, content, picture, Usuario_user_id, tema_id_tema) VALUES (?, ?, ?, ?, ?)', [title, content, picture, Usuario_user_id, tema_id_tema]).then(res => {
+  insertarPublicacion(title: string, content: string, picture: string, Usuario_user_id: number) {
+    return this.database.executeSql('INSERT INTO Publicaciones(title, content, picture, Usuario_user_id) VALUES (?, ?, ?, ?)', [title, content, picture, Usuario_user_id]).then(res => {
       this.presentAlert("Insertar", "Publicación Registrada");
       this.seleccionarPublicaciones();
     }).catch(e => {
@@ -223,6 +272,30 @@ export class ServicebdService {
       return true;
     } catch (error) {
       console.error('Error al cambiar la contraseña:', error);
+      return false;
+    }
+  }
+
+  async actualizarDatosUsuario(datos: any): Promise<boolean> {
+    try {
+      const query = `
+        UPDATE usuarios 
+        SET nick_name = ?, nombre = ?, apellido = ?, fecha_nacimiento = ?, avatar = ? 
+        WHERE email = ?`;
+      
+      const params = [
+        datos.nick_name,
+        datos.nombre, 
+        datos.apellido, 
+        datos.fechaNacimiento, 
+        datos.avatar, 
+        datos.email
+      ];
+      
+      await this.database.executeSql(query, params);
+      return true;
+    } catch (error) {
+      console.error('Error actualizando datos del usuario', error);
       return false;
     }
   }
@@ -292,15 +365,16 @@ export class ServicebdService {
   // Métodos para Usuarios
   seleccionarUsuarios() {
     return this.database.executeSql('SELECT * FROM usuarios', []).then(res => { // Cambiado de Usuario a usuarios
-      let items: Usuario[] = [];
+      let items: usuarios[] = [];
       if (res.rows.length > 0) {
         for (var i = 0; i < res.rows.length; i++) {
           items.push({
             user_id: res.rows.item(i).user_id,
             nick_name: res.rows.item(i).nick_name,
+            nombre: res.rows.item(i).nombre,    
+            apellido: res.rows.item(i).apellido,  
             email: res.rows.item(i).email,
             password: res.rows.item(i).password,
-            bio: res.rows.item(i).bio,
             avatar: res.rows.item(i).avatar,
             rol_rol_id: res.rows.item(i).rol_rol_id
           });
@@ -317,7 +391,6 @@ export class ServicebdService {
     fecha_nacimiento: string,
     email: string,
     password: string,
-    bio: string = '',
     avatar: string = '',
     rol_rol_id: number = 2
   ) {
@@ -325,14 +398,14 @@ export class ServicebdService {
       const sql = `
         INSERT INTO usuarios (
           nick_name, nombre, apellido, fecha_nacimiento, 
-          email, password, bio, avatar, rol_rol_id
+          email, password, avatar, rol_rol_id
         ) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
       `;
       
       const result = await this.database.executeSql(sql, [
         nick_name, nombre, apellido, fecha_nacimiento,
-        email, password, bio, avatar, rol_rol_id
+        email, password, avatar, rol_rol_id
       ]);
       
       console.log('Usuario insertado:', result);
@@ -356,44 +429,6 @@ export class ServicebdService {
       console.error(`Error obteniendo información de la tabla ${tableName}:`, error);
       throw error;
     }
-  }
-
-  // Métodos para Temas
-  seleccionarTemas() {
-    return this.database.executeSql('SELECT * FROM tema', []).then(res => {
-      let items: Tema[] = [];
-      if (res.rows.length > 0) {
-        for (var i = 0; i < res.rows.length; i++) {
-          items.push({
-            id_tema: res.rows.item(i).id_tema,
-            nombre: res.rows.item(i).nombre
-          });
-        }
-      }
-      this.listadoTemas.next(items);
-    });
-  }
-
-  insertarTema(nombre: string) {
-    return this.database.executeSql('INSERT INTO tema(nombre) VALUES (?)', [nombre]).then(res => {
-      this.presentAlert("Insertar", "Tema Registrado");
-      this.seleccionarTemas();
-    }).catch(e => {
-      this.presentAlert('Insertar', 'Error: ' + JSON.stringify(e));
-    });
-  }
-
-  async checkEmailExists(email: string): Promise<boolean> {
-    const query = 'SELECT COUNT(*) as count FROM usuarios WHERE email = ?';
-    const result = await this.database.executeSql(query, [email]);
-    return result.rows.item(0).count > 0;
-  }
-
-  // Método para verificar si existe un nickname
-  async checkNicknameExists(nickname: string): Promise<boolean> {
-    const query = 'SELECT COUNT(*) as count FROM usuarios WHERE nick_name = ?';
-    const result = await this.database.executeSql(query, [nickname]);
-    return result.rows.item(0).count > 0;
   }
 
   // Métodos para Reportes
@@ -474,68 +509,6 @@ export class ServicebdService {
     });
   }
 
-  // Método para obtener publicaciones con información del usuario y tema
-  obtenerPublicacionesConDetalles(): Promise<any[]> {
-    const query = `
-      SELECT p.*, u.nick_name, t.nombre as tema_nombre
-      FROM publicaciones p
-      LEFT JOIN usuarios u ON p.Usuario_user_id = u.user_id
-      LEFT JOIN tema t ON p.tema_id_tema = t.id_tema
-      ORDER BY p.created_dt DESC
-    `;
-    return this.database.executeSql(query, []).then(res => {
-      let publicaciones: any[] = [];
-      if (res.rows.length > 0) {
-        for (var i = 0; i < res.rows.length; i++) {
-          publicaciones.push({
-            post_id: res.rows.item(i).post_id,
-            title: res.rows.item(i).title,
-            content: res.rows.item(i).content,
-            created_dt: res.rows.item(i).created_dt,
-            picture: res.rows.item(i).picture,
-            Usuario_user_id: res.rows.item(i).Usuario_user_id,
-            tema_id_tema: res.rows.item(i).tema_id_tema,
-            nick_name: res.rows.item(i).nick_name,
-            tema_nombre: res.rows.item(i).tema_nombre
-          });
-        }
-      }
-      return publicaciones;
-    });
-  }
-
-  // Método para buscar publicaciones por título o contenido
-  buscarPublicaciones(termino: string): Promise<any[]> {
-    const query = `
-      SELECT p.*, u.nick_name, t.nombre as tema_nombre
-      FROM publicaciones p
-      LEFT JOIN usuarios u ON p.Usuario_user_id = u.user_id
-      LEFT JOIN tema t ON p.tema_id_tema = t.id_tema
-      WHERE p.title LIKE ? OR p.content LIKE ?
-      ORDER BY p.created_dt DESC
-    `;
-    const searchTerm = `%${termino}%`;
-    return this.database.executeSql(query, [searchTerm, searchTerm]).then(res => {
-      let publicaciones: any[] = [];
-      if (res.rows.length > 0) {
-        for (var i = 0; i < res.rows.length; i++) {
-          publicaciones.push({
-            post_id: res.rows.item(i).post_id,
-            title: res.rows.item(i).title,
-            content: res.rows.item(i).content,
-            created_dt: res.rows.item(i).created_dt,
-            picture: res.rows.item(i).picture,
-            Usuario_user_id: res.rows.item(i).Usuario_user_id,
-            tema_id_tema: res.rows.item(i).tema_id_tema,
-            nick_name: res.rows.item(i).nick_name,
-            tema_nombre: res.rows.item(i).tema_nombre
-          });
-        }
-      }
-      return publicaciones;
-    });
-  }
-
   // Método para obtener publicaciones
   async obtenerPublicaciones(): Promise<any[]> {
     try {
@@ -562,21 +535,6 @@ export class ServicebdService {
       return usuarios;
     } catch (error) {
       console.error('Error al obtener usuarios: ', error);
-      throw error;
-    }
-  }
-
-  // Método para obtener temas
-  async obtenerTemas(): Promise<any[]> {
-    try {
-      const result = await this.database.executeSql('SELECT * FROM temas', []);
-      const temas = [];
-      for (let i = 0; i < result.rows.length; i++) {
-        temas.push(result.rows.item(i));
-      }
-      return temas; // Devolver el array de temas
-    } catch (error) {
-      console.error('Error al obtener temas: ', error);
       throw error;
     }
   }
@@ -611,12 +569,12 @@ export class ServicebdService {
     }
   }
   
-  actualizarPublicacion(id: number, title: string, content: string, picture: string, Usuario_user_id: number, tema_id_tema: number): Promise<void> {
+  actualizarPublicacion(id: number, title: string, content: string, picture: string, Usuario_user_id: number): Promise<void> {
     // Aquí iría la lógica para actualizar la publicación en la base de datos
     return new Promise((resolve, reject) => {
       // Supongamos que usas SQLite o alguna lógica similar para actualizar
-      const query = 'UPDATE publicaciones SET title = ?, content = ?, picture = ?, Usuario_user_id = ?, tema_id_tema = ? WHERE id = ?';
-      const params = [title, content, picture, Usuario_user_id, tema_id_tema, id];
+      const query = 'UPDATE publicaciones SET title = ?, content = ?, picture = ?, Usuario_user_id = ? WHERE id = ?';
+      const params = [title, content, picture, Usuario_user_id];
   
       this.database.executeSql(query, params)
         .then(() => resolve())

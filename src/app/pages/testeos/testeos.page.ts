@@ -11,7 +11,6 @@ export class TesteosPage implements OnInit {
   currentSegment: string = 'publicaciones'; // Define el valor por defecto del segmento
   publicaciones: any[] = []; // Propiedad para publicaciones
   usuarios: any[] = []; // Propiedad para usuarios
-  temas: any[] = []; // Propiedad para temas
   reportes: any[] = []; // Propiedad para reportes
   comentarios: any[] = []; // Propiedad para comentarios
 
@@ -33,7 +32,6 @@ export class TesteosPage implements OnInit {
   loadData() {
     this.loadPublicaciones();
     this.loadUsuarios();
-    this.loadTemas();
     this.loadReportes();
     this.loadComments(); // Cargar comentarios
   }
@@ -49,13 +47,6 @@ export class TesteosPage implements OnInit {
   loadUsuarios() {
     this.servicebd.obtenerUsuarios().then(data => {
       this.usuarios = data;
-    });
-  }
-
-  // Método para cargar temas
-  loadTemas() {
-    this.servicebd.obtenerTemas().then(data => {
-      this.temas = data;
     });
   }
 
@@ -92,11 +83,6 @@ export class TesteosPage implements OnInit {
           name: 'picture',
           type: 'text', // Esto puede ser un URL o el nombre de una imagen predeterminada
           placeholder: 'URL de la imagen (opcional)'
-        },
-        {
-          name: 'tema_id_tema',
-          type: 'number',
-          placeholder: 'ID del Tema'
         }
       ],
       buttons: [
@@ -108,9 +94,9 @@ export class TesteosPage implements OnInit {
           text: 'Guardar',
           handler: (data) => {
             const usuarioId = 1; // Asume el ID del usuario actual
-            if (data.titulo && data.contenido && data.tema_id_tema) {
+            if (data.titulo && data.contenido) {
               const picture = data.picture || ''; // Puedes usar un valor vacío si no se proporciona imagen
-              this.servicebd.insertarPublicacion(data.titulo, data.contenido, picture, usuarioId, data.tema_id_tema)
+              this.servicebd.insertarPublicacion(data.titulo, data.contenido, picture, usuarioId)
                 .then(() => this.loadPublicaciones())
                 .catch(error => console.error('Error al agregar publicación: ', error));
             }
@@ -157,7 +143,7 @@ export class TesteosPage implements OnInit {
             const usuarioId = 1; // ID del usuario actual
             if (data.titulo && data.contenido) {
               const picture = data.picture || '';
-              this.servicebd.actualizarPublicacion(publicacion.id, data.titulo, data.contenido, picture, usuarioId, publicacion.tema_id_tema)
+              this.servicebd.actualizarPublicacion(publicacion.id, data.titulo, data.contenido, picture, usuarioId)
                 .then(() => this.loadPublicaciones())
                 .catch((error: any) => {
                   console.error('Error al editar publicación: ', error);
@@ -251,37 +237,6 @@ export class TesteosPage implements OnInit {
     await alert.present();
   }
   
-
-  // Método para agregar un nuevo tema
-  async addTema() {
-    const alert = await this.alertController.create({
-      header: 'Nuevo Tema',
-      inputs: [
-        {
-          name: 'nombre',
-          type: 'text',
-          placeholder: 'Nombre del tema'
-        }
-      ],
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel'
-        },
-        {
-          text: 'Guardar',
-          handler: (data) => {
-            if (data.nombre) {
-              this.servicebd.insertarTema(data.nombre)
-                .then(() => this.loadTemas())
-                .catch(error => console.error('Error al agregar tema: ', error));
-            }
-          }
-        }
-      ]
-    });
-    await alert.present();
-  }
 
   // Método para agregar un nuevo reporte
   async addReporte() {

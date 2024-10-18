@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController, NavController } from '@ionic/angular';
-import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
+import { AuthService } from '../../services/auth.service';
+import { ServicebdService } from '../../services/servicebd.service';
+import { state } from '@angular/animations';
 
 @Component({
   selector: 'app-paginaperfil',
@@ -10,10 +12,10 @@ import { Router } from '@angular/router';
 export class PaginaperfilPage implements OnInit {
   userName: string = '';
   userEmail: string = '';
-  edad: number = 0;
   nombre: string = '';
   apellido: string = '';
   fechaNacimiento: Date = new Date();
+  edad: number = 0;
   editMode: boolean = false;
 
   // contraseñas
@@ -22,20 +24,23 @@ export class PaginaperfilPage implements OnInit {
   newPassword: string = '';
   confirmNewPassword: string = '';
 
-  constructor(private alertController: AlertController, private router: Router) { }
+  constructor(
+    private alertController: AlertController, 
+    private authService: AuthService,
+    private servicebd: ServicebdService
+  ) {}
 
   ngOnInit() {
-    const navigation = this.router.getCurrentNavigation();
-    if (navigation?.extras?.state) {
-      const state = navigation.extras.state as any;
-      this.userName = state.userName || '';
-      this.userEmail = state.userEmail || '';
-      this.nombre = state.nombre || '';
-      this.apellido = state.apellido || '';
-      this.fechaNacimiento = state.fechaNacimiento ? new Date(state.fechaNacimiento) : new Date();
-      this.calcularEdad();
-      this.currentPassword = state.password || '';
-    }
+    this.authService.getCurrentUser().subscribe(user => {
+      if (user) {
+        this.userName = user.nick_name || ''; 
+        this.userEmail = user.email || '';
+        this.nombre = user.nombre || '';
+        this.apellido = user.apellido || '';
+        this.fechaNacimiento = user.fechaNacimiento ? new Date(user.fechaNacimiento) : new Date();
+        this.calcularEdad();
+      }
+    });
   }
 
   calcularEdad() {
@@ -55,18 +60,32 @@ export class PaginaperfilPage implements OnInit {
   }
 
   async guardarCambios() {
+    // Validaciones
     if (!this.userName || !this.userEmail || !this.nombre || !this.apellido || !this.fechaNacimiento) {
       await this.mostrarAlerta('Error', 'Por favor, complete todos los campos.');
       return;
     }
 
     if (!this.tieneEdadSuficiente(this.fechaNacimiento)) {
-      await this.mostrarAlerta('Error', 'Debes tener al menos 16 años para actualizar el perfil.');
+      await this.mostrarAlerta('Error', 'Debes tener al menos 13 años para actualizar el perfil.');
       return;
     }
 
-    await this.mostrarAlerta('Éxito', 'Perfil actualizado correctamente');
-    this.toggleEditMode();
+    // Intentar actualizar en la base de datos
+    const actualizado = await this.servicebd.actualizarDatosUsuario({
+      userName: this.userName,
+      userEmail: this.userEmail,
+      nombre: this.nombre,
+      apellido: this.apellido,
+      fechaNacimiento: this.fechaNacimiento.toISOString().slice(0, 10) // Formato correcto para la BD
+    });
+
+    if (actualizado) {
+      await this.mostrarAlerta('Éxito', 'Perfil actualizado correctamente');
+      this.toggleEditMode();
+    } else {
+      await this.mostrarAlerta('Error', 'Hubo un problema al actualizar el perfil.');
+    }
   }
 
   tieneEdadSuficiente(fechaNacimiento: Date): boolean {
@@ -79,10 +98,11 @@ export class PaginaperfilPage implements OnInit {
       edad--;
     }
     
-    return edad >= 16;
+    return edad >= 13;
   }
 
   async cambiarContrasena() {
+    // Validaciones de la contraseña
     if (!this.inputCurrentPassword || !this.newPassword || !this.confirmNewPassword) {
       await this.mostrarAlerta('Error', 'Por favor, complete todos los campos de la contraseña.');
       return;
@@ -103,7 +123,17 @@ export class PaginaperfilPage implements OnInit {
       return;
     }
 
-    await this.mostrarAlerta('Éxito', 'La contraseña se ha cambiado correctamente.');
+    // Intentar cambiar la contraseña en la base de datos
+    const passwordActualizada = await this.servicebd.cambiarContrasena(this.userEmail, this.newPassword);
+
+    if (passwordActualizada) {
+      await this.mostrarAlerta('Éxito', 'La contraseña se ha cambiado correctamente.');
+      this.newPassword = '';
+      this.confirmNewPassword = '';
+      this.inputCurrentPassword = '';
+    } else {
+      await this.mostrarAlerta('Error', 'Hubo un problema al cambiar la contraseña.');
+    }
   }
 
   async mostrarAlerta(header: string, message: string) {

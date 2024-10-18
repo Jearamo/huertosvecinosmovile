@@ -21,7 +21,6 @@ export class RegistroPage {
     fecha_nacimiento: '',
     email: '',
     password: '',
-    bio: '',
     avatar: ''
   };
   confirmarContrasena: string = '';
@@ -124,7 +123,7 @@ export class RegistroPage {
       // Redirigir al login después de 2 segundos
       setTimeout(() => {
         this.router.navigate(['/login']);
-      }, 2000);
+      }, 1000);
     } catch (error) {
       let errorMessage = 'Error al registrar usuario';
       

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { AuthService } from '../../services/auth.service';
 
@@ -24,36 +24,34 @@ export class LoginPage implements OnInit {
   }
 
   async login() {
-    if (!this.correo.trim() || !this.contrasena.trim()) {
-      const alert = await this.alertController.create({
-        header: 'Campos vacíos',
-        message: 'Por favor, rellena todos los campos',
-        buttons: ['OK'],
-      });
-      await alert.present();
+    if (this.correo.trim() === '' || this.contrasena.trim() === '') {
+      await this.presentAlert('Error', 'Por favor, completa todos los campos.');
       return;
     }
-  
+
     try {
-      const loginSuccess = await this.authService.login(this.correo, this.contrasena);
-      if (loginSuccess) {
-        this.router.navigate(['/tabs/tab1']);
+      const isLoggedIn = await this.authService.login(this.correo, this.contrasena);
+      if (isLoggedIn) {
+        // Redirigir al usuario a la página principal o la siguiente página
+        this.router.navigate(['/tabs/tab1']); // Ajusta la ruta según tu aplicación
       }
-    } catch (error: any) {
-      const alert = await this.alertController.create({
-        header: 'Error',
-        message: error?.message || 'Error al iniciar sesión',
-        buttons: ['OK'],
-      });
-      await alert.present();
+    } catch (error) {
+      // Manejo de errores ya se realiza en el servicio
+      console.error('Error de inicio de sesión:', error);
     }
   }
-  
-  
-  
 
   async pruebas() {
     await this.router.navigate(['/testeos']);
+  }
+
+  private async presentAlert(header: string, message: string): Promise<void> {
+    const alert = await this.alertController.create({
+      header,
+      message,
+      buttons: ['OK'],
+    });
+    await alert.present();
   }
 
   ngOnInit() {}
