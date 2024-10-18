@@ -93,4 +93,24 @@ export class AuthService {
   getCurrentUser() {
     return this.currentUser.asObservable();
   }
+
+  async login(email: string, password: string): Promise<boolean> {
+    try {
+      const usuarios = await this.dbService.obtenerUsuarios();
+      const user = usuarios.find(u => u.email === email && u.password === password);
+      
+      if (!user) {
+        throw new AuthError('Correo o contraseña incorrectos');
+      }
+  
+      this.currentUser.next(user);
+      this.isAuthenticated.next(true);
+      
+      return true;
+    } catch (error) {
+      const errMessage = (error as AuthError).message || 'Error desconocido';  // Aquí especificas el tipo
+      await this.presentAlert('Error', errMessage);
+      throw error;
+    }
+  }  
 }

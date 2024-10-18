@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -12,23 +13,7 @@ export class LoginPage implements OnInit {
   correo: string = '';
   contrasena: string = '';
 
-  // Usuario admin
-  adminName: string = 'Administrador';
-  adminApellido: string = 'ApellidoAdmin';
-  adminNombre: string = 'NombreAdmin';
-  adminNaci: Date = new Date('2003-06-30');
-  validEmail: string = 'admin@gmail.com';
-  validPassword: string = 'admin1234';
-
-  // Usuario normal (ejemplo)
-  userName: string = 'Juanito';
-  usuarioApellido: string = 'Perez';
-  usuarioNombre: string = 'Juan';
-  usuarioNaci: Date = new Date('2004-06-30');
-  normalEmail: string = 'juanito@gmail.com';
-  normalPassword: string = 'juanito123';
-
-  constructor(private router: Router, private alertController: AlertController) {}
+  constructor(private router: Router, private alertController: AlertController, private authService: AuthService) {}
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
@@ -48,38 +33,24 @@ export class LoginPage implements OnInit {
       await alert.present();
       return;
     }
-
-    if (this.correo === this.validEmail && this.contrasena === this.validPassword) {
-      this.router.navigate(['/tabs/tab1'], {
-        state: {
-          userName: this.adminName,
-          userEmail: this.validEmail,
-          nombre: this.adminNombre,
-          apellido: this.adminApellido,
-          fechaNacimiento: this.adminNaci.toISOString(),
-          password: this.validPassword,
-        },
-      });
-    } else if (this.correo === this.normalEmail && this.contrasena === this.normalPassword) {
-      this.router.navigate(['/tabs/tab1'], {
-        state: {
-          userName: this.userName,
-          userEmail: this.normalEmail,
-          nombre: this.usuarioNombre,
-          apellido: this.usuarioApellido,
-          fechaNacimiento: this.usuarioNaci.toISOString(),
-          password: this.normalPassword,
-        },
-      });
-    } else {
+  
+    try {
+      const loginSuccess = await this.authService.login(this.correo, this.contrasena);
+      if (loginSuccess) {
+        this.router.navigate(['/tabs/tab1']);
+      }
+    } catch (error: any) {
       const alert = await this.alertController.create({
         header: 'Error',
-        message: 'Correo o contraseña incorrectos',
+        message: error?.message || 'Error al iniciar sesión',
         buttons: ['OK'],
       });
       await alert.present();
     }
   }
+  
+  
+  
 
   async pruebas() {
     await this.router.navigate(['/testeos']);
