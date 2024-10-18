@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { ServicebdService } from '../../services/servicebd.service'; // Asegúrate de importar tu servicio aquí
 
 @Component({
   selector: 'app-recuperacion',
@@ -11,7 +12,11 @@ export class RecuperacionPage implements OnInit {
 
   userEmail: string = '';
 
-  constructor(private router: Router, private alertController: AlertController) { }
+  constructor(
+    private router: Router,
+    private alertController: AlertController,
+    private servicebd: ServicebdService // Agrega el servicio aquí
+  ) { }
 
   ngOnInit() {}
 
@@ -26,12 +31,14 @@ export class RecuperacionPage implements OnInit {
       return;
     }
 
-    if (this.userEmail === 'juanito@gmail.com') {
+    // Verifica si el usuario existe en la base de datos
+    const usuarioExiste = await this.servicebd.buscarUsuarioPorEmail(this.userEmail);
+    if (usuarioExiste) {
+      // Si existe, navega a la página de cambio de contraseña
       this.router.navigate(['/cambiopassword'], { queryParams: { email: this.userEmail } });
-      return;
+    } else {
+      await this.mostrarAlerta('Error', 'No se encontró un usuario con ese correo electrónico.');
     }
-
-    await this.mostrarAlerta('Error', 'No se encontró un usuario con ese correo electrónico.');
   }
 
   async mostrarAlerta(header: string, message: string) {

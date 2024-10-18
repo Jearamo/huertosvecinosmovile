@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { ServicebdService } from '../../services/servicebd.service';
 
 @Component({
   selector: 'app-cambiopassword',
@@ -16,12 +17,9 @@ export class CambiopasswordPage implements OnInit {
   readonly expectedSecretCode: string = '12345';
   showPassword: boolean = false;
 
-  constructor(private route: ActivatedRoute, private alertController: AlertController) { }
+  constructor(private route: ActivatedRoute, private alertController: AlertController, private servicebd: ServicebdService, private router: Router) { }
 
   ngOnInit() {
-    this.route.queryParams.subscribe(params => {
-      this.userEmail = params['email'] || '';
-    });
   }
 
   togglePasswordVisibility() {
@@ -29,28 +27,23 @@ export class CambiopasswordPage implements OnInit {
   }
 
   async cambiarContrasena() {
-    if (!this.secretCode.trim() || !this.newPassword.trim() || !this.confirmNewPassword.trim()) {
-      await this.mostrarAlerta('Aviso', 'Por favor, llena todos los campos.');
+    if (!this.userEmail.trim()) {
+      await this.mostrarAlerta('Aviso', 'Por favor, ingresa tu correo electrónico.');
       return;
     }
-
-    if (this.secretCode !== this.expectedSecretCode) {
-      await this.mostrarAlerta('Error', 'El código secreto es incorrecto.');
-      return;
+  
+    console.log(`Buscando usuario con email: ${this.userEmail}`); // Log para depuración
+  
+    const usuarioExiste = await this.servicebd.buscarUsuarioPorEmail(this.userEmail);
+    console.log(`Usuario encontrado: ${usuarioExiste}`); // Log para depuración
+  
+    if (usuarioExiste) {
+      await this.mostrarAlerta('Éxito', 'Puedes proceder a cambiar la contraseña.');
+    } else {
+      await this.mostrarAlerta('Error', 'No se encontró un usuario con ese correo electrónico.');
     }
-
-    if (this.newPassword.length < 8) {
-      await this.mostrarAlerta('Error', 'La nueva contraseña debe tener al menos 8 caracteres.');
-      return;
-    }
-
-    if (this.newPassword !== this.confirmNewPassword) {
-      await this.mostrarAlerta('Error', 'La nueva contraseña y la confirmación no coinciden.');
-      return;
-    }
-
-    await this.mostrarAlerta('Éxito', 'La contraseña se ha cambiado correctamente.');
   }
+  
 
   async mostrarAlerta(header: string, message: string) {
     const alert = await this.alertController.create({

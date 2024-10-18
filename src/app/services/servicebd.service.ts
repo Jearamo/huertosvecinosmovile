@@ -201,6 +201,12 @@ export class ServicebdService {
     });
   }
 
+  async buscarUsuarioPorEmail(email: string): Promise<boolean> {
+    const sql = 'SELECT COUNT(*) AS count FROM usuarios WHERE email = ?';
+    const result = await this.database.executeSql(sql, [email]);
+    return result.rows.item(0).count > 0; // Esto debería devolver true si hay un usuario con ese correo
+  }
+
   insertarPublicacion(title: string, content: string, picture: string, Usuario_user_id: number, tema_id_tema: number) {
     return this.database.executeSql('INSERT INTO Publicaciones(title, content, picture, Usuario_user_id, tema_id_tema) VALUES (?, ?, ?, ?, ?)', [title, content, picture, Usuario_user_id, tema_id_tema]).then(res => {
       this.presentAlert("Insertar", "Publicación Registrada");
