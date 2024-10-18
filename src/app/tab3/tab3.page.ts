@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
+import { MessageService } from './../services/message.service';
 
 @Component({
   selector: 'app-tab3',
@@ -14,7 +15,7 @@ export class Tab3Page implements OnInit {
   fechaNacimiento: Date = new Date();
   password: string = '';
 
-  constructor(private router: Router) { }
+  constructor(private router: Router,private formService: MessageService) { }
 
   ngOnInit() {
     const navigation = this.router.getCurrentNavigation();
@@ -55,5 +56,7 @@ export class Tab3Page implements OnInit {
   }
 
   logout() {
-    this.router.navigate(['/login'])
-}}
+    this.formService.clearFormData(); // Limpiar datos del formulario
+    this.router.navigate(['/login']); // Redirigir a la página de login
+  }
+}
