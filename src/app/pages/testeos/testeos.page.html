@@ -1,40 +1,98 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>testeos</ion-title>
+    <ion-title>Testeos</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-list>
-    <ion-item *ngFor="let pub of publicaciones">
+  <ion-segment (ionChange)="segmentChanged($event)" value="publicaciones">
+    <ion-segment-button value="publicaciones">
+      <ion-label>Publicaciones</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="usuarios">
+      <ion-label>Usuarios</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="temas">
+      <ion-label>Temas</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="reportes">
+      <ion-label>Reportes</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <!-- Publicaciones -->
+  <div *ngIf="currentSegment === 'publicaciones'">
+    <ion-list>
+      <ion-item *ngFor="let pub of publicaciones">
+        <ion-label>
+          <h2>{{ pub.title }}</h2>
+          <p>{{ pub.content }}</p>
+          <p>Por: {{ pub.nick_name }} | Tema: {{ pub.tema_nombre }}</p>
+        </ion-label>
+        <ion-button (click)="editPublicacion(pub)">Editar</ion-button>
+        <ion-button (click)="deletePublicacion(pub.post_id)">Eliminar</ion-button>
+        <ion-button (click)="openComments(pub.post_id)">Ver comentarios</ion-button>
+      </ion-item>
+    </ion-list>
+    <ion-button expand="block" (click)="addPublicacion()">Agregar Publicación</ion-button>
+  </div>
+
+  <!-- Usuarios -->
+  <div *ngIf="currentSegment === 'usuarios'">
+    <ion-list>
+      <ion-item *ngFor="let user of usuarios">
+        <ion-label>
+          <h2>{{ user.nick_name }}</h2>
+          <p>{{ user.email }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+    <ion-button expand="block" (click)="addUsuario()">Agregar Usuario</ion-button>
+  </div>
+
+  <!-- Temas -->
+  <div *ngIf="currentSegment === 'temas'">
+    <ion-list>
+      <ion-item *ngFor="let tema of temas">
+        <ion-label>
+          <h2>{{ tema.nombre }}</h2>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+    <ion-button expand="block" (click)="addTema()">Agregar Tema</ion-button>
+  </div>
+
+  <!-- Reportes -->
+  <div *ngIf="currentSegment === 'reportes'">
+    <ion-list>
+      <ion-item *ngFor="let reporte of reportes">
+        <ion-label>
+          <h2>{{ reporte.reason }}</h2>
+          <p>Estado: {{ reporte.status }} | Tipo: {{ reporte.tipo }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+    <ion-button expand="block" (click)="addReporte()">Agregar Reporte</ion-button>
+  </div>
+
+  <!-- Comentarios -->
+  <ion-list *ngIf="comentarios.length > 0">
+    <ion-item *ngFor="let comentario of comentarios">
       <ion-label>
-        <h2>{{ pub.titulo }}</h2>
-        <p>{{ pub.content }}</p>
+        <h2>{{ comentario.nick_name }}</h2>
+        <p>{{ comentario.content }}</p>
+        <p>{{ comentario.created_date | date:'medium' }}</p>
       </ion-label>
-      <ion-button (click)="editPublicacion(pub.postid, 'Nuevo Título', 'Nuevo Contenido')">Editar</ion-button>
-      <ion-button (click)="deletePublicacion(pub.postid)">Eliminar</ion-button>
-      <ion-button (click)="openComments(pub.postid)">Ver comentarios</ion-button>
+      <ion-buttons slot="end">
+        <ion-button (click)="responder(comentario.comment_id)">Responder</ion-button>
+        <ion-button (click)="reportar(comentario.comment_id)">Reportar</ion-button>
+      </ion-buttons>
     </ion-item>
   </ion-list>
 
-  <ion-button (click)="addPublicacion('Título de ejemplo', 'Contenido de ejemplo')">Agregar Publicación</ion-button>
-  <ion-button expand="full" (click)="openMenu()">Ver publicación</ion-button>
-
-  <ion-modal [isOpen]="isMenuOpen" (didDismiss)="closeMenu()" class="menu-modal">
-    <ng-template>
-      <ion-header>
-        <ion-toolbar>
-          <ion-title>Menú</ion-title>
-          <ion-buttons slot="end">
-            <ion-button (click)="closeMenu()">Cerrar</ion-button>
-          </ion-buttons>
-        </ion-toolbar>
-      </ion-header>
-      <ion-content class="ion-padding">
-        <ion-button expand="block" (click)="comentar()">Comentar</ion-button>
-        <ion-button expand="block" (click)="responder()">Responder</ion-button>
-        <ion-button expand="block" (click)="reportar()">Reportar</ion-button>
-      </ion-content>
-    </ng-template>
-  </ion-modal>
+  <ion-footer>
+    <ion-toolbar>
+      <ion-button expand="block" (click)="comentar()">Agregar Comentario</ion-button>
+    </ion-toolbar>
+  </ion-footer>
 </ion-content>

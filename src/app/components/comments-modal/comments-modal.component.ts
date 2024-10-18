@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, AlertController } from '@ionic/angular';
 import { ServicebdService } from '../../services/servicebd.service';
 
 @Component({
@@ -13,7 +13,8 @@ export class CommentsModalComponent implements OnInit {
 
   constructor(
     private modalController: ModalController,
-    private servicebd: ServicebdService
+    private servicebd: ServicebdService,
+    private alertController: AlertController
   ) {}
 
   ngOnInit() {
@@ -21,7 +22,7 @@ export class CommentsModalComponent implements OnInit {
   }
 
   loadComments() {
-    this.servicebd.getComentarios(this.postId).then(data => {
+    this.servicebd.obtenerComentariosConUsuario(this.postId).then(data => {
       this.comentarios = data;
     });
   }
@@ -30,15 +31,111 @@ export class CommentsModalComponent implements OnInit {
     this.modalController.dismiss();
   }
 
-  comentar() {
-    // Implementa la lógica para añadir un comentario
+  async comentar() {
+    const alert = await this.alertController.create({
+      header: 'Agregar Comentario',
+      inputs: [
+        {
+          name: 'content',
+          type: 'textarea',
+          placeholder: 'Escribe tu comentario aquí'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        },
+        {
+          text: 'Comentar',
+          handler: (data) => {
+            if (data.content) {
+              // Asumimos que el Usuario_user_id es 1 por ahora
+              this.servicebd.insertarComentario(data.content, 1, this.postId)
+                .then(() => {
+                  console.log('Comentario agregado con éxito');
+                  this.loadComments();
+                })
+                .catch(error => {
+                  console.error('Error al agregar comentario: ', error);
+                });
+            }
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 
-  responder() {
-    // Implementa la lógica para responder a un comentario
+  async responder(comentarioId: number) {
+    const alert = await this.alertController.create({
+      header: 'Responder Comentario',
+      inputs: [
+        {
+          name: 'content',
+          type: 'textarea',
+          placeholder: 'Escribe tu respuesta aquí'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        },
+        {
+          text: 'Responder',
+          handler: (data) => {
+            if (data.content) {
+              this.servicebd.insertarComentario(data.content, 1, this.postId)
+                .then(() => {
+                  console.log('Respuesta agregada con éxito');
+                  this.loadComments();
+                })
+                .catch(error => {
+                  console.error('Error al agregar respuesta: ', error);
+                });
+            }
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 
-  reportar() {
-    // Implementa la lógica para reportar un comentario
+  async reportar(comentarioId: number) {
+    const alert = await this.alertController.create({
+      header: 'Reportar Comentario',
+      inputs: [
+        {
+          name: 'reason',
+          type: 'textarea',
+          placeholder: 'Razón del reporte'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        },
+        {
+          text: 'Reportar',
+          handler: (data) => {
+            if (data.reason) {
+              this.servicebd.insertarReporte(data.reason, 1, 'Pendiente', 'Comentario', '')
+                .then(() => {
+                  console.log('Reporte enviado con éxito');
+                })
+                .catch(error => {
+                  console.error('Error al enviar reporte: ', error);
+                });
+            }
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 }
