@@ -34,7 +34,7 @@ export class RecuperacionPage implements OnInit {
     // Verifica si el usuario existe en la base de datos
     const usuarioExiste = await this.servicebd.buscarUsuarioPorEmail(this.userEmail);
     if (usuarioExiste) {
-      // Si existe, navega a la página de cambio de contraseña
+      console.log(`Correo enviado: ${this.userEmail}`);
       this.router.navigate(['/cambiopassword'], { queryParams: { email: this.userEmail } });
     } else {
       await this.mostrarAlerta('Error', 'No se encontró un usuario con ese correo electrónico.');

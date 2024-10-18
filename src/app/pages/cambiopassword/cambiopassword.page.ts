@@ -14,36 +14,50 @@ export class CambiopasswordPage implements OnInit {
   secretCode: string = '';
   newPassword: string = '';
   confirmNewPassword: string = '';
-  readonly expectedSecretCode: string = '12345';
+  readonly expectedSecretCode: string = '12345'; // Código fijo
   showPassword: boolean = false;
 
-  constructor(private route: ActivatedRoute, private alertController: AlertController, private servicebd: ServicebdService, private router: Router) { }
+  constructor(
+    private route: ActivatedRoute,
+    private alertController: AlertController,
+    private servicebd: ServicebdService, 
+    private router: Router
+  ) { }
 
   ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      this.userEmail = params['email'] || '';
+      console.log(`Correo recibido: ${this.userEmail}`);  // Log para verificar
+    });
   }
+  
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
   }
 
   async cambiarContrasena() {
-    if (!this.userEmail.trim()) {
-      await this.mostrarAlerta('Aviso', 'Por favor, ingresa tu correo electrónico.');
+    // Verificar si el código secreto es correcto
+    if (this.secretCode !== this.expectedSecretCode) {
+      await this.mostrarAlerta('Error', 'El código secreto ingresado es incorrecto.');
       return;
     }
-  
-    console.log(`Buscando usuario con email: ${this.userEmail}`); // Log para depuración
-  
-    const usuarioExiste = await this.servicebd.buscarUsuarioPorEmail(this.userEmail);
-    console.log(`Usuario encontrado: ${usuarioExiste}`); // Log para depuración
-  
-    if (usuarioExiste) {
-      await this.mostrarAlerta('Éxito', 'Puedes proceder a cambiar la contraseña.');
+
+    // Verificar si las contraseñas coinciden
+    if (!this.newPassword || this.newPassword !== this.confirmNewPassword) {
+      await this.mostrarAlerta('Error', 'Las contraseñas no coinciden.');
+      return;
+    }
+
+    // Actualizar la contraseña en la base de datos
+    const resultado = await this.servicebd.cambiarContrasena(this.userEmail, this.newPassword);
+    if (resultado) {
+      await this.mostrarAlerta('Éxito', 'Tu contraseña ha sido cambiada con éxito.');
+      this.router.navigate(['/login']); // Redirigir al login después del cambio
     } else {
-      await this.mostrarAlerta('Error', 'No se encontró un usuario con ese correo electrónico.');
+      await this.mostrarAlerta('Error', 'Hubo un problema al cambiar la contraseña. Inténtalo nuevamente.');
     }
   }
-  
 
   async mostrarAlerta(header: string, message: string) {
     const alert = await this.alertController.create({

@@ -216,6 +216,17 @@ export class ServicebdService {
     });
   }
 
+  async cambiarContrasena(email: string, newPassword: string): Promise<boolean> {
+    const sql = 'UPDATE usuarios SET password = ? WHERE email = ?';
+    try {
+      await this.database.executeSql(sql, [newPassword, email]);
+      return true;
+    } catch (error) {
+      console.error('Error al cambiar la contraseña:', error);
+      return false;
+    }
+  }
+
   modificarPublicacion(post_id: number, title: string, content: string, picture: string) {
     return this.database.executeSql('UPDATE publicaciones SET title = ?, content = ?, picture = ? WHERE post_id = ?', [title, content, picture, post_id])
       .then(res => {
